@@ -1,2 +1,2 @@
-# Kotlin Modding Skeleton
-Provides an example mod written in Kotlin using Kotlin for Forge.
+# EchoLib
+A minecraft mod that handles resource distribution (e.x. Power)
