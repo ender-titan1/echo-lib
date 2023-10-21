@@ -23,7 +23,7 @@ class TransmitterBlock(props: Properties) : BaseHorizontalBlock(props), INetwork
         val networkMember = blockEntity as INetworkMember
 
         for (network in connectToNetworks()) {
-            val cap = networkMember.getNetworkCapability(network.netsign)
+            val cap = networkMember.getNetworkCapability(network.netsign)!!
 
             println(network.graph.getAmountConnected(cap))
             network.graph.unmarkAll()

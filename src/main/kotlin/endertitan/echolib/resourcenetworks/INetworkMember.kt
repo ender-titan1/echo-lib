@@ -4,5 +4,5 @@ import endertitan.echolib.resourcenetworks.capability.NetworkCapability
 
 
 interface INetworkMember {
-    fun getNetworkCapability(netsign: Int): NetworkCapability
+    fun getNetworkCapability(netsign: Int): NetworkCapability?
 }
