@@ -5,7 +5,7 @@ import endertitan.echolib.resourcenetworks.INetworkValue
 @Suppress("unchecked_cast")
 interface IProducer<T : INetworkValue> {
     var consumers: HashSet<IConsumer<T>>
-    var availableResources: T
+    var outgoingResources: T
 
     /**
      * DO NOT OVERRIDE

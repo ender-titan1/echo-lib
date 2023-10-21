@@ -6,18 +6,19 @@ import endertitan.echolib.resourcenetworks.ResourceNetworkManager
 
 class ProducerCapability<T : INetworkValue>(netsign: Int) : NetworkCapability(netsign), IProducer<T> {
     override var consumers: HashSet<IConsumer<T>> = hashSetOf()
-    override var availableResources: T = ResourceNetworkManager.getSupplier<T>(netsign).invoke()
+    override var outgoingResources: T = ResourceNetworkManager.getSupplier<T>(netsign).invoke()
 
     constructor(sign: ResourceNetwork.EchoLibNetsign) : this(sign.netsign)
 
+    @Suppress("unchecked_cast")
     override fun distribute() {
         if (consumers.size == 0)
             return
 
-        val amountForEach = availableResources.dividedBy(consumers.size)
+        val amountForEach = outgoingResources.dividedBy(consumers.size)
 
         for (consumer in consumers) {
-            consumer.availableResources.add(amountForEach)
+            consumer.incomingResources[this] = amountForEach as T
         }
     }
 }

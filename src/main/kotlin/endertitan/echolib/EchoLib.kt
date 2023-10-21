@@ -35,8 +35,17 @@ object EchoLib {
                 value += other.value
         }
 
+        override fun remove(other: INetworkValue) {
+            if (other is Power)
+                value -= other.value
+        }
+
         override fun dividedBy(amount: Int): INetworkValue {
             return Power(value / amount)
+        }
+
+        override fun toString(): String {
+            return value.toString()
         }
     }
 
@@ -108,7 +117,7 @@ object EchoLib {
                 network.graph.insertNode(vertex, hashSetOf())
 
                 val neighbors = adjacent.filter {
-                    it.a.connectToNetworks().contains<ResourceNetwork<*>>(network)
+                    it.a.connectToNetworks().contains(network)
                 }
 
                 for (entry in neighbors) {
@@ -129,6 +138,8 @@ object EchoLib {
                         producer.setConsumersGeneric(hashSetOf())
                     }
 
+                    producer.distribute()
+
                     network.graph.unmarkAll()
                 }
 
@@ -140,6 +151,7 @@ object EchoLib {
                             val producer = it as IProducer<*>
 
                             producer.addConsumer(consumer)
+                            producer.distribute()
                         }
                     }
 
@@ -182,18 +194,26 @@ object EchoLib {
 
                 val capability = blockEntity.getNetworkCapability(network.netsign)
 
-                // TODO(This could probably be more efficient)
+                // This could probably be more efficient
                 if (capability is IConsumer<*>) {
                     network.graph.doForEachConnected(capability) {
                         if (it is IProducer<*>) {
-                            (it as IProducer<*>).removeConsumer(capability)
+                            val producer = it as IProducer<*>
+                            producer.removeConsumer(capability)
+                            producer.distribute()
                         }
                     }
 
                     network.graph.unmarkAll()
                 }
 
-                // TODO(Handle producers)
+                if (capability is IProducer<*>) {
+                    val producer = capability as IProducer<*>
+
+                    for (consumer in capability.consumers) {
+                        consumer.removeResourcesFromProducer(producer, ResourceNetworkManager.getSupplier(network.netsign))
+                    }
+                }
 
                 val neighbors = adjacent.filter {
                     it.a.connectToNetworks().contains(network)

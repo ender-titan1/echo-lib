@@ -7,8 +7,7 @@ import endertitan.echolib.resourcenetworks.capability.IConsumer
 import endertitan.echolib.resourcenetworks.capability.NetworkCapability
 
 class ConsumerCapability<T : INetworkValue>(netsign: Int) : NetworkCapability(netsign), IConsumer<T> {
-    // TODO
-    override var availableResources: T = ResourceNetworkManager.getSupplier<T>(netsign).invoke()
+    override var incomingResources: HashMap<IProducer<*>, T> = hashMapOf()
 
     constructor(sign: ResourceNetwork.EchoLibNetsign) : this(sign.netsign)
 }

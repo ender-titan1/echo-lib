@@ -13,7 +13,11 @@ import java.lang.IllegalArgumentException
 
 class ProducerEntity(pos: BlockPos, state: BlockState) : BlockEntity(BlockEntities.PRODUCER_ENTITY, pos, state), INetworkMember {
 
-    private val powerNetworkCapability: NetworkCapability = ProducerCapability<EchoLib.Power>(ResourceNetwork.EchoLibNetsign.POWER)
+    private val powerNetworkCapability: ProducerCapability<EchoLib.Power> = ProducerCapability(ResourceNetwork.EchoLibNetsign.POWER)
+
+    init {
+        powerNetworkCapability.outgoingResources = EchoLib.Power(100)
+    }
 
     companion object {
         fun new(pos: BlockPos, state: BlockState): ProducerEntity {

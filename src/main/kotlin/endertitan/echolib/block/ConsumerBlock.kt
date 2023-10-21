@@ -6,6 +6,8 @@ import endertitan.echolib.blockentity.ProducerEntity
 import endertitan.echolib.blockentity.TransmitterEntity
 import endertitan.echolib.resourcenetworks.ResourceNetwork
 import endertitan.echolib.resourcenetworks.INetworkMember
+import endertitan.echolib.resourcenetworks.capability.IConsumer
+import endertitan.echolib.resourcenetworks.capability.IProducer
 import net.minecraft.core.BlockPos
 import net.minecraft.world.InteractionHand
 import net.minecraft.world.InteractionResult
@@ -23,6 +25,12 @@ class ConsumerBlock(props: Properties) : BaseHorizontalBlock(props), INetworkBlo
 
         val blockEntity = level.getBlockEntity(pos)
         val networkMember = blockEntity as INetworkMember
+
+        for (network in connectToNetworks()) {
+            val consumer = networkMember.getNetworkCapability(network.netsign) as IConsumer<*>
+
+            println("Consuming ${consumer.totalResources(network.netsign)}")
+        }
 
         return super.use(p_60503_, level, pos, player, p_60507_, p_60508_)
     }

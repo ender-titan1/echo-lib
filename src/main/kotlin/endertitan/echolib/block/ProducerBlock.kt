@@ -2,7 +2,6 @@ package endertitan.echolib.block
 
 import endertitan.echolib.EchoLib
 import endertitan.echolib.blockentity.ProducerEntity
-import endertitan.echolib.blockentity.TransmitterEntity
 import endertitan.echolib.resourcenetworks.ResourceNetwork
 import endertitan.echolib.resourcenetworks.INetworkMember
 import endertitan.echolib.resourcenetworks.capability.IProducer
@@ -28,6 +27,10 @@ class ProducerBlock(props: Properties) : BaseHorizontalBlock(props), INetworkBlo
             val producer = networkMember.getNetworkCapability(network.netsign) as IProducer<*>
 
             println("Producer connected to ${producer.consumers.size} consumers")
+            println("Producing ${producer.outgoingResources}")
+
+            producer.outgoingResources.add(EchoLib.Power(10))
+            producer.distribute()
         }
 
         return super.use(p_60503_, level, pos, player, p_60507_, p_60508_)

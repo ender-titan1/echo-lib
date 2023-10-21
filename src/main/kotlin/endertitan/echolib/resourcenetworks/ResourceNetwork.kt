@@ -27,12 +27,15 @@ class ResourceNetwork<T : INetworkValue>(sign: Int, sup: () -> T) {
             }
 
             if (it is IConsumer<*>) {
-                consumers.add(it as IConsumer<T>)
+                val consumer = it as IConsumer<T>
+                consumers.add(consumer)
+                consumer.incomingResources = hashMapOf()
             }
         }
 
         for (producer in producers) {
             producer.consumers = consumers
+            producer.distribute()
         }
     }
 
