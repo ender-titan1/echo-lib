@@ -1,6 +1,7 @@
 package endertitan.echolib.resourcenetworks.capability
 
-import endertitan.echolib.resourcenetworks.INetworkValue
+import endertitan.echolib.resourcenetworks.value.INetworkValue
+import endertitan.echolib.resourcenetworks.Netsign
 import endertitan.echolib.resourcenetworks.ResourceNetworkManager
 
 interface IConsumer<T : INetworkValue> {
@@ -10,7 +11,7 @@ interface IConsumer<T : INetworkValue> {
         incomingResources[producer] = sup.invoke()
     }
 
-    fun totalResources(netsign: Int): T {
+    fun totalResources(netsign: Netsign): T {
         if (incomingResources.isEmpty())
             return ResourceNetworkManager.getSupplier<T>(netsign).invoke()
 

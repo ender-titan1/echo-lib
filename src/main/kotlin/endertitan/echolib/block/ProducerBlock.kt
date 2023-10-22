@@ -1,10 +1,11 @@
 package endertitan.echolib.block
 
 import endertitan.echolib.EchoLib
-import endertitan.echolib.blockentity.ProducerEntity
+import endertitan.echolib.blockentity.demo.ProducerEntity
 import endertitan.echolib.resourcenetworks.ResourceNetwork
 import endertitan.echolib.resourcenetworks.INetworkMember
 import endertitan.echolib.resourcenetworks.capability.IProducer
+import endertitan.echolib.resourcenetworks.value.IntValue
 import net.minecraft.core.BlockPos
 import net.minecraft.world.InteractionHand
 import net.minecraft.world.InteractionResult
@@ -29,7 +30,7 @@ class ProducerBlock(props: Properties) : BaseHorizontalBlock(props), INetworkBlo
             println("Producer connected to ${producer.consumers.size} consumers")
             println("Producing ${producer.outgoingResources}")
 
-            producer.outgoingResources.add(EchoLib.Power(10))
+            producer.outgoingResources.add(IntValue(10))
             producer.distribute()
         }
 

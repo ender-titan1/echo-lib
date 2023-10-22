@@ -1,7 +1,7 @@
 package endertitan.echolib.block
 
 import endertitan.echolib.EchoLib
-import endertitan.echolib.blockentity.TransmitterEntity
+import endertitan.echolib.blockentity.demo.TransmitterEntity
 import endertitan.echolib.resourcenetworks.ResourceNetwork
 import endertitan.echolib.resourcenetworks.INetworkMember
 import net.minecraft.core.BlockPos

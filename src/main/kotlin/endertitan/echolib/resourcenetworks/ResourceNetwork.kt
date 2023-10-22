@@ -4,17 +4,12 @@ import endertitan.echolib.resourcenetworks.capability.IConsumer
 import endertitan.echolib.resourcenetworks.capability.IProducer
 import endertitan.echolib.resourcenetworks.capability.NetworkCapability
 import endertitan.echolib.resourcenetworks.graph.Graph
+import endertitan.echolib.resourcenetworks.value.INetworkValue
 
-class ResourceNetwork<T : INetworkValue>(sign: Int, sup: () -> T) {
-    val netsign: Int = sign;
+class ResourceNetwork<T : INetworkValue>(sign: Netsign, sup: () -> T) {
+    val netsign: Netsign = sign;
     val graph: Graph<NetworkCapability> = Graph()
     val newValueSupplier: () -> T = sup
-
-    companion object {
-        fun newNetsign(string: String): Int {
-            return string.hashCode()
-        }
-    }
 
     @Suppress("unchecked_cast")
     fun refreshFrom(vertex: NetworkCapability) {
@@ -37,11 +32,5 @@ class ResourceNetwork<T : INetworkValue>(sign: Int, sup: () -> T) {
             producer.consumers = consumers
             producer.distribute()
         }
-    }
-
-    enum class EchoLibNetsign(val netsign: Int) {
-        POWER(newNetsign("ECHOLIB_BASE_POWER")),
-        HEAT(newNetsign("ECHOLIB_BASE_HEAT")),
-        DATA(newNetsign("ECHOLIB_BASE_DATA"))
     }
 }

@@ -3,6 +3,7 @@ package endertitan.echolib.resourcenetworks
 import endertitan.echolib.block.INetworkBlock
 import endertitan.echolib.resourcenetworks.capability.IConsumer
 import endertitan.echolib.resourcenetworks.capability.IProducer
+import endertitan.echolib.resourcenetworks.value.INetworkValue
 import net.minecraft.core.BlockPos
 import net.minecraft.util.Tuple
 import net.minecraft.world.level.LevelAccessor
@@ -11,14 +12,14 @@ import net.minecraft.world.level.block.state.BlockState
 object ResourceNetworkManager {
     var networks: HashSet<ResourceNetwork<*>> = hashSetOf()
 
-    fun <T : INetworkValue> newNetwork(netsign: Int, sup: () -> T): ResourceNetwork<T> {
+    fun <T : INetworkValue> newNetwork(netsign: Netsign, sup: () -> T): ResourceNetwork<T> {
         val network = ResourceNetwork<T>(netsign, sup)
         networks.add(network)
         return network
     }
 
     @Suppress("unchecked_cast")
-    fun <T : INetworkValue> getSupplier(netsign: Int): () -> T {
+    fun <T : INetworkValue> getSupplier(netsign: Netsign): () -> T {
         return networks.find {
             it.netsign == netsign
         }!!.newValueSupplier as () -> T

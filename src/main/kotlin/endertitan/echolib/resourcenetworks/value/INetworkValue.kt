@@ -1,4 +1,4 @@
-package endertitan.echolib.resourcenetworks
+package endertitan.echolib.resourcenetworks.value
 
 interface INetworkValue {
     fun add(other: INetworkValue)

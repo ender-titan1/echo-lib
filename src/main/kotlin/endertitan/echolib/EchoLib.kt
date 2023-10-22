@@ -4,12 +4,11 @@ import endertitan.echolib.block.INetworkBlock
 import endertitan.echolib.init.BlockEntities
 import endertitan.echolib.init.Blocks
 import endertitan.echolib.init.Items
-import endertitan.echolib.resourcenetworks.ResourceNetwork
+import endertitan.echolib.resourcenetworks.*
 import endertitan.echolib.resourcenetworks.capability.IConsumer
-import endertitan.echolib.resourcenetworks.INetworkMember
-import endertitan.echolib.resourcenetworks.INetworkValue
-import endertitan.echolib.resourcenetworks.ResourceNetworkManager
 import endertitan.echolib.resourcenetworks.capability.IProducer
+import endertitan.echolib.resourcenetworks.value.INetworkValue
+import endertitan.echolib.resourcenetworks.value.IntValue
 import net.minecraft.util.Tuple
 import net.minecraft.world.item.CreativeModeTabs
 import net.minecraft.world.item.ItemStack
@@ -22,39 +21,15 @@ import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import thedarkcolour.kotlinforforge.forge.FORGE_BUS
 import thedarkcolour.kotlinforforge.forge.MOD_BUS
-import kotlin.collections.HashSet
 
 @Mod(EchoLib.ID)
 object EchoLib {
-
-    class Power(amount: Int) : INetworkValue {
-        var value: Int = amount
-
-        override fun add(other: INetworkValue) {
-            if (other is Power)
-                value += other.value
-        }
-
-        override fun remove(other: INetworkValue) {
-            if (other is Power)
-                value -= other.value
-        }
-
-        override fun dividedBy(amount: Int): INetworkValue {
-            return Power(value / amount)
-        }
-
-        override fun toString(): String {
-            return value.toString()
-        }
-    }
-
     const val ID = "echolib"
 
     val LOGGER: Logger = LogManager.getLogger(ID)
 
-    val POWER_NETWORK = ResourceNetworkManager.newNetwork(ResourceNetwork.EchoLibNetsign.POWER.netsign) {
-        Power(0)
+    val POWER_NETWORK = ResourceNetworkManager.newNetwork(Netsign.EchoLibCommon.ENERGY) {
+        IntValue(0)
     }
 
     init {

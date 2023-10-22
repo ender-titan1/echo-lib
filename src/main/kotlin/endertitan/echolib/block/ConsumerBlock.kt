@@ -1,13 +1,10 @@
 package endertitan.echolib.block
 
 import endertitan.echolib.EchoLib
-import endertitan.echolib.blockentity.ConsumerEntity
-import endertitan.echolib.blockentity.ProducerEntity
-import endertitan.echolib.blockentity.TransmitterEntity
+import endertitan.echolib.blockentity.demo.ConsumerEntity
 import endertitan.echolib.resourcenetworks.ResourceNetwork
 import endertitan.echolib.resourcenetworks.INetworkMember
 import endertitan.echolib.resourcenetworks.capability.IConsumer
-import endertitan.echolib.resourcenetworks.capability.IProducer
 import net.minecraft.core.BlockPos
 import net.minecraft.world.InteractionHand
 import net.minecraft.world.InteractionResult

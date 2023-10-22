@@ -1,6 +1,6 @@
 package endertitan.echolib.resourcenetworks.capability
 
-import endertitan.echolib.resourcenetworks.INetworkValue
+import endertitan.echolib.resourcenetworks.value.INetworkValue
 
 @Suppress("unchecked_cast")
 interface IProducer<T : INetworkValue> {

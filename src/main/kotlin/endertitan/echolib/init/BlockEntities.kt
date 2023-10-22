@@ -1,9 +1,9 @@
 package endertitan.echolib.init
 
 import endertitan.echolib.EchoLib
-import endertitan.echolib.blockentity.ConsumerEntity
-import endertitan.echolib.blockentity.ProducerEntity
-import endertitan.echolib.blockentity.TransmitterEntity
+import endertitan.echolib.blockentity.demo.ConsumerEntity
+import endertitan.echolib.blockentity.demo.ProducerEntity
+import endertitan.echolib.blockentity.demo.TransmitterEntity
 import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraftforge.registries.DeferredRegister
 import net.minecraftforge.registries.ForgeRegistries
