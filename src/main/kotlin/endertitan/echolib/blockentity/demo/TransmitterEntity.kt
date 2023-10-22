@@ -10,7 +10,7 @@ import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.level.block.state.BlockState
 
 class TransmitterEntity(pos: BlockPos, state: BlockState) : BlockEntity(BlockEntities.TRANSMITTER_ENTITY, pos, state), INetworkMember {
-    private val powerNetworkCapability: NetworkCapability = NetworkCapability(Netsign.EchoLibCommon.ENERGY)
+    private val powerNetworkCapability: NetworkCapability = NetworkCapability(Netsign.EchoLibCommon.ENERGY, this)
 
     companion object {
         fun new(pos: BlockPos, state: BlockState): TransmitterEntity {
@@ -27,6 +27,6 @@ class TransmitterEntity(pos: BlockPos, state: BlockState) : BlockEntity(BlockEnt
 
     override fun onLoad() {
         super.onLoad()
-        NetworkEntityHelper.onLoadTransmitter(this, blockState, blockPos, level!!)
+        NetworkEntityHelper.onLoad(this, blockState, blockPos, level!!)
     }
 }

@@ -1,5 +1,6 @@
 package endertitan.echolib.blockentity.demo
 
+import endertitan.echolib.blockentity.NetworkEntityHelper
 import endertitan.echolib.init.BlockEntities
 import endertitan.echolib.resourcenetworks.capability.NetworkCapability
 import endertitan.echolib.resourcenetworks.INetworkMember
@@ -13,12 +14,17 @@ import java.lang.IllegalArgumentException
 
 class ConsumerEntity(pos: BlockPos, state: BlockState) : BlockEntity(BlockEntities.CONSUMER_ENTITY, pos, state), INetworkMember {
 
-    private val powerNetworkCapability: NetworkCapability = ConsumerCapability<IntValue>(Netsign.EchoLibCommon.ENERGY)
+    private val powerNetworkCapability: NetworkCapability = ConsumerCapability<IntValue>(Netsign.EchoLibCommon.ENERGY, this)
 
     companion object {
         fun new(pos: BlockPos, state: BlockState): ConsumerEntity {
             return ConsumerEntity(pos, state)
         }
+    }
+
+    override fun onLoad() {
+        super.onLoad()
+        NetworkEntityHelper.onLoad(this, blockState, blockPos, level!!)
     }
 
     override fun getNetworkCapability(netsign: Netsign): NetworkCapability {

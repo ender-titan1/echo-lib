@@ -8,7 +8,7 @@ import net.minecraft.world.level.LevelAccessor
 import net.minecraft.world.level.block.state.BlockState
 
 object NetworkEntityHelper {
-    fun onLoadTransmitter(entity: INetworkMember, blockState: BlockState, blockPos: BlockPos, level: LevelAccessor) {
+    fun onLoad(entity: INetworkMember, blockState: BlockState, blockPos: BlockPos, level: LevelAccessor) {
         val networkBlock = blockState.block as INetworkBlock
 
         for (network in networkBlock.connectToNetworks()) {
