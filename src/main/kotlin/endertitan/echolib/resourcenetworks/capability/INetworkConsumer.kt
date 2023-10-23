@@ -16,7 +16,7 @@ interface INetworkConsumer<T : INetworkValue> {
             return ResourceNetworkManager.getSupplier<T>(netsign).invoke()
 
         return incomingResources.values.reduce { acc, t ->
-            acc.add(t)
+            acc += t
             acc
         }
     }

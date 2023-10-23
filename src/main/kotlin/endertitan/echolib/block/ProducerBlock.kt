@@ -35,6 +35,9 @@ class ProducerBlock(props: Properties) : BaseHorizontalBlock(props), INetworkBlo
             }
 
             if (cap is INetworkProducer<*>) {
+                cap.outgoingResources += IntValue(10)
+                cap.distribute()
+
                 println("$sign: Producer connected to ${cap.consumers.size} consumers")
                 println("$sign: Producing ${cap.outgoingResources}")
             }

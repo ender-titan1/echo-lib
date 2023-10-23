@@ -1,11 +1,11 @@
 package endertitan.echolib.resourcenetworks.value
 
 interface INetworkValue {
-    fun add(other: INetworkValue)
+    operator fun plusAssign(other: INetworkValue)
 
-    fun remove(other: INetworkValue)
+    operator fun minusAssign(other: INetworkValue)
 
-    fun dividedBy(amount: Int): INetworkValue
+    operator fun div(amount: Int): INetworkValue
 
     override fun toString(): String
 }

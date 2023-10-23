@@ -1,17 +1,17 @@
 package endertitan.echolib.resourcenetworks.value
 
 class FloatValue(var value: Float) : INetworkValue {
-    override fun add(other: INetworkValue) {
+    override operator fun plusAssign(other: INetworkValue) {
         if (other is IntValue)
             value += other.value
     }
 
-    override fun remove(other: INetworkValue) {
+    override operator fun minusAssign(other: INetworkValue) {
         if (other is IntValue)
             value -= other.value
     }
 
-    override fun dividedBy(amount: Int): INetworkValue {
+    override operator fun div(amount: Int): INetworkValue {
         return FloatValue(value / amount)
     }
 
