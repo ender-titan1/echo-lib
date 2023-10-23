@@ -20,6 +20,8 @@ class ProducerEntity(pos: BlockPos, state: BlockState) : BlockEntity(BlockEntiti
 
     private val powerNetworkCapability: ProducerCapability<IntValue> = ProducerCapability(Netsign.EchoLibCommon.ENERGY, this)
 
+    private var consumerBlockPositions: MutableMap<Netsign, Array<BlockPos>> = mutableMapOf()
+
     init {
         powerNetworkCapability.outgoingResources = IntValue(100)
     }
@@ -32,9 +34,6 @@ class ProducerEntity(pos: BlockPos, state: BlockState) : BlockEntity(BlockEntiti
 
     override fun saveAdditional(nbt: CompoundTag) {
         val block = blockState.block as INetworkBlock
-
-        println(block.connectToNetworks().size)
-
         for (network in block.connectToNetworks())
         {
             val capability = getNetworkCapability(network.netsign) as IProducer<*>
@@ -49,7 +48,6 @@ class ProducerEntity(pos: BlockPos, state: BlockState) : BlockEntity(BlockEntiti
                 list.add(pos.z)
             }
 
-            println(list.toString())
             nbt.putIntArray("$prefix-consumers", list.toIntArray())
         }
 
@@ -64,7 +62,7 @@ class ProducerEntity(pos: BlockPos, state: BlockState) : BlockEntity(BlockEntiti
             val prefix = network.netsign.sign.toString()
             val array = nbt.getIntArray("$prefix-consumers").toList().chunked(3)
 
-            println(array.toString())
+            val output = mutableListOf<BlockPos>()
 
             for (chunk in array) {
                 val x = chunk[0]
@@ -72,26 +70,33 @@ class ProducerEntity(pos: BlockPos, state: BlockState) : BlockEntity(BlockEntiti
                 val z = chunk[2]
 
                 val pos = BlockPos(x, y, z)
-                val consumerEntity = level!!.getBlockEntity(pos) as INetworkMember
-                val consumer = consumerEntity.getNetworkCapability(network.netsign) as IConsumer<*>
-                capability.addConsumer(consumer)
+                output.add(pos)
             }
 
-            capability.distribute()
+            consumerBlockPositions[network.netsign] = output.toTypedArray()
         }
-
         super.load(nbt)
     }
 
     override fun onLoad() {
         super.onLoad()
         NetworkEntityHelper.onLoad(this, blockState, blockPos, level!!)
+
+        for (entry in consumerBlockPositions.entries) {
+            val netsign = entry.key
+            val producer = getNetworkCapability(netsign) as IProducer<*>
+            for (pos in entry.value) {
+                val entity = level!!.getBlockEntity(pos) as INetworkMember
+                val consumer = entity.getNetworkCapability(netsign) as IConsumer<*>
+                producer.addConsumer(consumer)
+            }
+        }
     }
 
-    override fun getNetworkCapability(netsign: Netsign): NetworkCapability {
+    override fun getNetworkCapability(netsign: Netsign): NetworkCapability? {
         if (powerNetworkCapability.netsign == netsign)
             return powerNetworkCapability
 
-        throw IllegalArgumentException("Attempting to connect to disallowed network")
+        return null
     }
 }
