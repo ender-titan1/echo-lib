@@ -1,4 +1,4 @@
-package endertitan.echolib.block
+package endertitan.echolib.resourcenetworks
 
 import endertitan.echolib.resourcenetworks.ResourceNetwork
 

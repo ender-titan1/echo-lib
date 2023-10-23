@@ -2,9 +2,11 @@ package endertitan.echolib.block
 
 import endertitan.echolib.EchoLib
 import endertitan.echolib.blockentity.demo.ConsumerEntity
+import endertitan.echolib.resourcenetworks.INetworkBlock
 import endertitan.echolib.resourcenetworks.ResourceNetwork
 import endertitan.echolib.resourcenetworks.INetworkMember
 import endertitan.echolib.resourcenetworks.capability.INetworkConsumer
+import endertitan.echolib.resourcenetworks.capability.INetworkProducer
 import net.minecraft.core.BlockPos
 import net.minecraft.world.InteractionHand
 import net.minecraft.world.InteractionResult
@@ -24,9 +26,19 @@ class ConsumerBlock(props: Properties) : BaseHorizontalBlock(props), INetworkBlo
         val networkMember = blockEntity as INetworkMember
 
         for (network in connectToNetworks()) {
-            val consumer = networkMember.getNetworkCapability(network.netsign) as INetworkConsumer<*>
+            val cap = networkMember.getNetworkCapability(network.netsign)
+            val sign = network.netsign.sign.toString()
 
-            println("Consuming ${consumer.totalResources(network.netsign)}")
+            if (cap is INetworkConsumer<*>) {
+                println("$sign:  Consuming ${cap.totalResources(network.netsign)}")
+            }
+
+            if (cap is INetworkProducer<*>) {
+                println("$sign: Producer connected to ${cap.consumers.size} consumers")
+                println("$sign: Producing ${cap.outgoingResources}")
+            }
+            
+            println("$sign: ${network.countConnected(cap!!)}")
         }
 
         return super.use(p_60503_, level, pos, player, p_60507_, p_60508_)

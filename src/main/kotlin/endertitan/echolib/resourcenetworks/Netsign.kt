@@ -14,7 +14,12 @@ class Netsign(modid: String, network: String) {
         return false
     }
 
+    override fun hashCode(): Int {
+        return sign.hashCode()
+    }
+
     object EchoLibCommon {
         val ENERGY = Netsign(EchoLib.ID, "energy")
+        val DATA = Netsign(EchoLib.ID, "data")
     }
 }

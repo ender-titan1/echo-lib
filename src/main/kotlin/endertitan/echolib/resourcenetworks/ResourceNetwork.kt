@@ -33,4 +33,10 @@ class ResourceNetwork<T : INetworkValue>(sign: Netsign, sup: () -> T) {
             producer.distribute()
         }
     }
+
+    fun countConnected(vertex: NetworkCapability): Int {
+        val connected = graph.getAmountConnected(vertex)
+        graph.unmarkAll()
+        return connected
+    }
 }

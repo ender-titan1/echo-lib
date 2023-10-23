@@ -1,6 +1,6 @@
 package endertitan.echolib.blockentity
 
-import endertitan.echolib.block.INetworkBlock
+import endertitan.echolib.resourcenetworks.INetworkBlock
 import endertitan.echolib.resourcenetworks.INetworkMember
 import endertitan.echolib.resourcenetworks.Netsign
 import endertitan.echolib.resourcenetworks.capability.INetworkConsumer
@@ -39,19 +39,22 @@ object NetworkEntityHelper {
     fun producerSaveAdditional(nbt: CompoundTag, entity: INetworkMember, blockState: BlockState) {
         val block = blockState.block as INetworkBlock
         for (network in block.connectToNetworks()) {
-            val capability = entity.getNetworkCapability(network.netsign) as INetworkProducer<*>
-            val prefix = network.netsign.sign.toString()
-            val list = mutableListOf<Int>()
+            val capability = entity.getNetworkCapability(network.netsign)
 
-            for (consumer in capability.consumers) {
-                val consumerCapability = consumer as NetworkCapability
-                val pos = consumerCapability.blockEntity.blockPos
-                list.add(pos.x)
-                list.add(pos.y)
-                list.add(pos.z)
+            if (capability is INetworkProducer<*>) {
+                val prefix = network.netsign.sign.toString()
+                val list = mutableListOf<Int>()
+
+                for (consumer in capability.consumers) {
+                    val consumerCapability = consumer as NetworkCapability
+                    val pos = consumerCapability.blockEntity.blockPos
+                    list.add(pos.x)
+                    list.add(pos.y)
+                    list.add(pos.z)
+                }
+
+                nbt.putIntArray("$prefix-consumers", list.toIntArray())
             }
-
-            nbt.putIntArray("$prefix-consumers", list.toIntArray())
         }
     }
 
@@ -86,6 +89,8 @@ object NetworkEntityHelper {
                 val consumer = member.getNetworkCapability(netsign) as INetworkConsumer<*>
                 producer.addConsumer(consumer)
             }
+
+            producer.distribute()
         }
     }
 }

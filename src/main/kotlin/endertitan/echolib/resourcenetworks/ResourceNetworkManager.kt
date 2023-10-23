@@ -1,6 +1,5 @@
 package endertitan.echolib.resourcenetworks
 
-import endertitan.echolib.block.INetworkBlock
 import endertitan.echolib.resourcenetworks.capability.INetworkConsumer
 import endertitan.echolib.resourcenetworks.capability.INetworkProducer
 import endertitan.echolib.resourcenetworks.value.INetworkValue
@@ -13,7 +12,7 @@ object ResourceNetworkManager {
     var networks: HashSet<ResourceNetwork<*>> = hashSetOf()
 
     fun <T : INetworkValue> newNetwork(netsign: Netsign, sup: () -> T): ResourceNetwork<T> {
-        val network = ResourceNetwork<T>(netsign, sup)
+        val network = ResourceNetwork(netsign, sup)
         networks.add(network)
         return network
     }
@@ -25,6 +24,7 @@ object ResourceNetworkManager {
         }!!.newValueSupplier as () -> T
     }
 
+    @Suppress("unchecked_cast")
     fun addBlock(state: BlockState, pos: BlockPos, level: LevelAccessor) {
         val block = state.block as INetworkBlock
         val networks = block.connectToNetworks()
@@ -141,7 +141,7 @@ object ResourceNetworkManager {
                 val producer = capability as INetworkProducer<*>
 
                 for (consumer in capability.consumers) {
-                    consumer.removeResourcesFromProducer(producer, ResourceNetworkManager.getSupplier(network.netsign))
+                    consumer.removeResourcesFromProducer(producer, getSupplier(network.netsign))
                 }
             }
 

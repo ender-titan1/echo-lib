@@ -1,14 +1,12 @@
 package endertitan.echolib
 
-import endertitan.echolib.block.INetworkBlock
+import endertitan.echolib.resourcenetworks.INetworkBlock
 import endertitan.echolib.init.BlockEntities
 import endertitan.echolib.init.Blocks
 import endertitan.echolib.init.Items
 import endertitan.echolib.resourcenetworks.*
-import endertitan.echolib.resourcenetworks.capability.INetworkConsumer
-import endertitan.echolib.resourcenetworks.capability.INetworkProducer
+import endertitan.echolib.resourcenetworks.value.FloatValue
 import endertitan.echolib.resourcenetworks.value.IntValue
-import net.minecraft.util.Tuple
 import net.minecraft.world.item.CreativeModeTabs
 import net.minecraft.world.item.ItemStack
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent
