@@ -4,7 +4,7 @@ import endertitan.echolib.EchoLib
 import endertitan.echolib.blockentity.demo.ProducerEntity
 import endertitan.echolib.resourcenetworks.ResourceNetwork
 import endertitan.echolib.resourcenetworks.INetworkMember
-import endertitan.echolib.resourcenetworks.capability.IProducer
+import endertitan.echolib.resourcenetworks.capability.INetworkProducer
 import endertitan.echolib.resourcenetworks.value.IntValue
 import net.minecraft.core.BlockPos
 import net.minecraft.world.InteractionHand
@@ -25,7 +25,7 @@ class ProducerBlock(props: Properties) : BaseHorizontalBlock(props), INetworkBlo
         val networkMember = blockEntity as INetworkMember
 
         for (network in connectToNetworks()) {
-            val producer = networkMember.getNetworkCapability(network.netsign) as IProducer<*>
+            val producer = networkMember.getNetworkCapability(network.netsign) as INetworkProducer<*>
 
             println("Producer connected to ${producer.consumers.size} consumers")
             println("Producing ${producer.outgoingResources}")

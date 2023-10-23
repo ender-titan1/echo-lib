@@ -4,10 +4,10 @@ import endertitan.echolib.resourcenetworks.value.INetworkValue
 import endertitan.echolib.resourcenetworks.Netsign
 import endertitan.echolib.resourcenetworks.ResourceNetworkManager
 
-interface IConsumer<T : INetworkValue> {
-    var incomingResources: HashMap<IProducer<*>, T>
+interface INetworkConsumer<T : INetworkValue> {
+    var incomingResources: HashMap<INetworkProducer<*>, T>
 
-    fun removeResourcesFromProducer(producer: IProducer<*>, sup: () -> T) {
+    fun removeResourcesFromProducer(producer: INetworkProducer<*>, sup: () -> T) {
         incomingResources[producer] = sup.invoke()
     }
 

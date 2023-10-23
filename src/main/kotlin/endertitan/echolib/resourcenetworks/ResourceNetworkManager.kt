@@ -1,8 +1,8 @@
 package endertitan.echolib.resourcenetworks
 
 import endertitan.echolib.block.INetworkBlock
-import endertitan.echolib.resourcenetworks.capability.IConsumer
-import endertitan.echolib.resourcenetworks.capability.IProducer
+import endertitan.echolib.resourcenetworks.capability.INetworkConsumer
+import endertitan.echolib.resourcenetworks.capability.INetworkProducer
 import endertitan.echolib.resourcenetworks.value.INetworkValue
 import net.minecraft.core.BlockPos
 import net.minecraft.util.Tuple
@@ -59,15 +59,15 @@ object ResourceNetworkManager {
                 network.graph.connect(vertex, networkMember.getNetworkCapability(network.netsign)!!)
             }
 
-            if (vertex is IProducer<*>) {
-                val producer = vertex as IProducer<*>
+            if (vertex is INetworkProducer<*>) {
+                val producer = vertex as INetworkProducer<*>
 
                 val set = network.graph.searchForAll(vertex) {
-                    it is IConsumer<*>
+                    it is INetworkConsumer<*>
                 }
 
                 if (set != null) {
-                    producer.setConsumersGeneric(set as HashSet<IConsumer<*>>)
+                    producer.setConsumersGeneric(set as HashSet<INetworkConsumer<*>>)
                 } else {
                     producer.setConsumersGeneric(hashSetOf())
                 }
@@ -77,12 +77,12 @@ object ResourceNetworkManager {
                 network.graph.unmarkAll()
             }
 
-            if (vertex is IConsumer<*>) {
-                val consumer = vertex as IConsumer<*>
+            if (vertex is INetworkConsumer<*>) {
+                val consumer = vertex as INetworkConsumer<*>
 
                 network.graph.doForEachConnected(vertex) {
-                    if (it is IProducer<*>) {
-                        val producer = it as IProducer<*>
+                    if (it is INetworkProducer<*>) {
+                        val producer = it as INetworkProducer<*>
 
                         producer.addConsumer(consumer)
                         producer.distribute()
@@ -95,6 +95,67 @@ object ResourceNetworkManager {
             // Refresh network if connecting to two or more blocks
             if (neighbors.size > 1) {
                 network.refreshFrom(vertex)
+                network.graph.unmarkAll()
+            }
+        }
+    }
+
+    fun removeBlock(state: BlockState, pos: BlockPos, level: LevelAccessor) {
+        val block = state.block as INetworkBlock
+        val networks = block.connectToNetworks()
+        val blockEntity = level.getBlockEntity(pos) as INetworkMember
+
+        val positions = arrayOf(pos.above(), pos.below(), pos.north(), pos.south(), pos.west(), pos.east())
+        val adjacent = mutableListOf<Tuple<INetworkBlock, INetworkMember>>()
+
+        // Get all neighbours
+        for (position in positions) {
+            val blockState = level.getBlockState(position)
+            if (blockState.block is INetworkBlock) {
+                val entity = level.getBlockEntity(position) as INetworkMember
+
+                adjacent.add(Tuple(blockState.block as INetworkBlock, entity))
+            }
+        }
+
+        // Remove from all connected networks
+        for (network in networks) {
+            network.graph.removeNode(blockEntity.getNetworkCapability(network.netsign)!!)
+
+            val capability = blockEntity.getNetworkCapability(network.netsign)
+
+            // This could probably be more efficient
+            if (capability is INetworkConsumer<*>) {
+                network.graph.doForEachConnected(capability) {
+                    if (it is INetworkProducer<*>) {
+                        val producer = it as INetworkProducer<*>
+                        producer.removeConsumer(capability)
+                        producer.distribute()
+                    }
+                }
+
+                network.graph.unmarkAll()
+            }
+
+            if (capability is INetworkProducer<*>) {
+                val producer = capability as INetworkProducer<*>
+
+                for (consumer in capability.consumers) {
+                    consumer.removeResourcesFromProducer(producer, ResourceNetworkManager.getSupplier(network.netsign))
+                }
+            }
+
+            val neighbors = adjacent.filter {
+                it.a.connectToNetworks().contains(network)
+            }
+
+            // Refresh network
+            if (neighbors.size > 1) {
+                for (neighbour in neighbors) {
+                    val vertex = neighbour.b.getNetworkCapability(network.netsign)
+                    network.refreshFrom(vertex!!)
+                }
+
                 network.graph.unmarkAll()
             }
         }

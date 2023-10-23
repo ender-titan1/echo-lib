@@ -2,8 +2,12 @@ package endertitan.echolib.blockentity
 
 import endertitan.echolib.block.INetworkBlock
 import endertitan.echolib.resourcenetworks.INetworkMember
+import endertitan.echolib.resourcenetworks.Netsign
+import endertitan.echolib.resourcenetworks.capability.INetworkConsumer
+import endertitan.echolib.resourcenetworks.capability.INetworkProducer
 import endertitan.echolib.resourcenetworks.capability.NetworkCapability
 import net.minecraft.core.BlockPos
+import net.minecraft.nbt.CompoundTag
 import net.minecraft.world.level.LevelAccessor
 import net.minecraft.world.level.block.state.BlockState
 
@@ -28,6 +32,59 @@ object NetworkEntityHelper {
                     continue
 
                 network.graph.connect(capability, neighbourEntity.getNetworkCapability(network.netsign) as NetworkCapability)
+            }
+        }
+    }
+
+    fun producerSaveAdditional(nbt: CompoundTag, entity: INetworkMember, blockState: BlockState) {
+        val block = blockState.block as INetworkBlock
+        for (network in block.connectToNetworks()) {
+            val capability = entity.getNetworkCapability(network.netsign) as INetworkProducer<*>
+            val prefix = network.netsign.sign.toString()
+            val list = mutableListOf<Int>()
+
+            for (consumer in capability.consumers) {
+                val consumerCapability = consumer as NetworkCapability
+                val pos = consumerCapability.blockEntity.blockPos
+                list.add(pos.x)
+                list.add(pos.y)
+                list.add(pos.z)
+            }
+
+            nbt.putIntArray("$prefix-consumers", list.toIntArray())
+        }
+    }
+
+    fun producerLoadNBT(nbt: CompoundTag, blockState: BlockState, consumerBlockPositions: MutableMap<Netsign, Array<BlockPos>>) {
+        val block = blockState.block as INetworkBlock
+
+        for (network in block.connectToNetworks()) {
+            val prefix = network.netsign.sign.toString()
+            val array = nbt.getIntArray("$prefix-consumers").toList().chunked(3)
+
+            val output = mutableListOf<BlockPos>()
+
+            for (chunk in array) {
+                val x = chunk[0]
+                val y = chunk[1]
+                val z = chunk[2]
+
+                val pos = BlockPos(x, y, z)
+                output.add(pos)
+            }
+
+            consumerBlockPositions[network.netsign] = output.toTypedArray()
+        }
+    }
+
+    fun producerLoadFromPositions(entity: INetworkMember, consumerBlockPositions: MutableMap<Netsign, Array<BlockPos>>, level: LevelAccessor) {
+        for (entry in consumerBlockPositions.entries) {
+            val netsign = entry.key
+            val producer = entity.getNetworkCapability(netsign) as INetworkProducer<*>
+            for (pos in entry.value) {
+                val member = level.getBlockEntity(pos) as INetworkMember
+                val consumer = member.getNetworkCapability(netsign) as INetworkConsumer<*>
+                producer.addConsumer(consumer)
             }
         }
     }

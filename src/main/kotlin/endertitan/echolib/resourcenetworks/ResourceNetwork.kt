@@ -1,7 +1,7 @@
 package endertitan.echolib.resourcenetworks
 
-import endertitan.echolib.resourcenetworks.capability.IConsumer
-import endertitan.echolib.resourcenetworks.capability.IProducer
+import endertitan.echolib.resourcenetworks.capability.INetworkConsumer
+import endertitan.echolib.resourcenetworks.capability.INetworkProducer
 import endertitan.echolib.resourcenetworks.capability.NetworkCapability
 import endertitan.echolib.resourcenetworks.graph.Graph
 import endertitan.echolib.resourcenetworks.value.INetworkValue
@@ -13,16 +13,16 @@ class ResourceNetwork<T : INetworkValue>(sign: Netsign, sup: () -> T) {
 
     @Suppress("unchecked_cast")
     fun refreshFrom(vertex: NetworkCapability) {
-        val producers: HashSet<IProducer<T>> = hashSetOf()
-        val consumers: HashSet<IConsumer<T>> = hashSetOf()
+        val producers: HashSet<INetworkProducer<T>> = hashSetOf()
+        val consumers: HashSet<INetworkConsumer<T>> = hashSetOf()
 
         graph.doForEachConnected(vertex) {
-            if (it is IProducer<*>) {
-                producers.add(it as IProducer<T>)
+            if (it is INetworkProducer<*>) {
+                producers.add(it as INetworkProducer<T>)
             }
 
-            if (it is IConsumer<*>) {
-                val consumer = it as IConsumer<T>
+            if (it is INetworkConsumer<*>) {
+                val consumer = it as INetworkConsumer<T>
                 consumers.add(consumer)
                 consumer.incomingResources = hashMapOf()
             }
