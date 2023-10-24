@@ -1,5 +1,12 @@
 package endertitan.echolib.resourcenetworks.event
 
+import endertitan.echolib.resourcenetworks.core.ResourceNetwork
+
+/**
+ * The type of event that happened on a [ResourceNetwork]
+ *
+ * @see NetworkEvent
+ */
 enum class NetworkEventType {
     ANY_ADDED,
     PRODUCER_ADDED,
