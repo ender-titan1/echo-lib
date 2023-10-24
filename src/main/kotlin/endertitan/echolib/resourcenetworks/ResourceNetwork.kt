@@ -39,7 +39,7 @@ class ResourceNetwork<T : INetworkValue>(sign: Netsign, sup: () -> T) {
                 consumer.incomingResources = hashMapOf()
             }
 
-            tags.addAll(it.blockEntity.getTags(netsign))
+            tags.addAll(it.blockEntity.getNetworkTags(netsign))
         }
 
         for (producer in producers) {

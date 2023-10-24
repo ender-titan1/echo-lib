@@ -30,7 +30,6 @@ object EchoLib {
         .listener(NetworkEventType.ANY_ADDED) {
             println("Added to network!")
         }
-        .static()
         .build()
 
     init {

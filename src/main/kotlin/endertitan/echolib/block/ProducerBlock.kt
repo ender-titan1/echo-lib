@@ -40,6 +40,10 @@ class ProducerBlock(props: Properties) : BaseHorizontalBlock(props), INetworkBlo
 
                 println("$sign: Producer connected to ${cap.consumers.size} consumers")
                 println("$sign: Producing ${cap.outgoingResources}")
+
+                for (tag in cap.foundTags) {
+                    println("${tag.key.key} -> ${tag.value}")
+                }
             }
 
             println("$sign: ${network.countConnected(cap!!)}")

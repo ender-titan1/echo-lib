@@ -59,7 +59,7 @@ object ResourceNetworkManager {
 
                 val tags: HashSet<NetworkTag> = hashSetOf()
                 val set = network.graph.searchForAll(vertex) {
-                    tags.addAll(it.blockEntity.getTags(network.netsign))
+                    tags.addAll(it.blockEntity.getNetworkTags(network.netsign))
                     it is INetworkConsumer<*>
                 }
 
@@ -92,7 +92,7 @@ object ResourceNetworkManager {
             }
 
             // Refresh network if connecting to two or more blocks
-            if (neighbors.size > 1) {
+            if (neighbors.size > 1 || blockEntity.forceNetworkUpdate) {
                 network.refreshFrom(vertex)
                 network.graph.unmarkAll()
             }
@@ -181,7 +181,7 @@ object ResourceNetworkManager {
             }
 
             // Refresh network
-            if (neighbors.size > 1) {
+            if (neighbors.size > 1 || blockEntity.forceNetworkUpdate) {
                 for (neighbour in neighbors) {
                     val vertex = neighbour.b.getNetworkCapability(network.netsign)
                     network.refreshFrom(vertex!!)
