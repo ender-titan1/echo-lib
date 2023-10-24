@@ -21,7 +21,7 @@ abstract class BaseNetworkProducerContainerEntity(type: BlockEntityType<*>, pos:
     }
 
     override fun load(nbt: CompoundTag) {
-        NetworkEntityHelper.producerLoadNBT(nbt, blockState, consumerBlockPositions)
+        NetworkEntityHelper.producerLoadNBT(this, nbt, blockState, consumerBlockPositions)
         super.load(nbt)
     }
 }

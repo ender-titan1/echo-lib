@@ -28,10 +28,6 @@ class NetworkBuilder<T : INetworkValue>(val netsign: Netsign, private val sup: (
         return this
     }
 
-    fun limiter(): NetworkBuilder<T> {
-        return this
-    }
-
     fun defaultDistributor(distributor: BaseDistributor): NetworkBuilder<T> {
         network.distributor = distributor
         return this

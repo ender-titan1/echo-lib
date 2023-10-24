@@ -26,6 +26,8 @@ class ResourceNetwork<T : INetworkValue>(sign: Netsign, sup: () -> T) {
         val producers: HashSet<INetworkProducer<T>> = hashSetOf()
         val consumers: HashSet<INetworkConsumer<T>> = hashSetOf()
 
+        val tags: HashSet<NetworkTag> = hashSetOf()
+
         graph.doForEachConnected(vertex) {
             if (it is INetworkProducer<*>) {
                 producers.add(it as INetworkProducer<T>)
@@ -36,10 +38,13 @@ class ResourceNetwork<T : INetworkValue>(sign: Netsign, sup: () -> T) {
                 consumers.add(consumer)
                 consumer.incomingResources = hashMapOf()
             }
+
+            tags.addAll(it.blockEntity.getTags(netsign))
         }
 
         for (producer in producers) {
             producer.consumers = consumers
+            producer.foundTags = tags
             producer.distribute()
         }
     }

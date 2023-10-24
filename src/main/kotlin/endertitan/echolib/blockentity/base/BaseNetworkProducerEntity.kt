@@ -2,6 +2,7 @@ package endertitan.echolib.blockentity.base
 
 import endertitan.echolib.blockentity.NetworkEntityHelper
 import endertitan.echolib.resourcenetworks.Netsign
+import endertitan.echolib.resourcenetworks.NetworkTag
 import net.minecraft.core.BlockPos
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.world.level.block.entity.BlockEntityType
@@ -21,7 +22,7 @@ abstract class BaseNetworkProducerEntity(type: BlockEntityType<*>, pos: BlockPos
     }
 
     override fun load(nbt: CompoundTag) {
-        NetworkEntityHelper.producerLoadNBT(nbt, blockState, consumerBlockPositions)
+        NetworkEntityHelper.producerLoadNBT(this, nbt, blockState, consumerBlockPositions)
         super.load(nbt)
     }
 }

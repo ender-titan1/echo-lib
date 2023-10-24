@@ -1,14 +1,13 @@
 package endertitan.echolib.blockentity
 
-import endertitan.echolib.resourcenetworks.INetworkBlock
-import endertitan.echolib.resourcenetworks.INetworkMember
-import endertitan.echolib.resourcenetworks.Netsign
+import endertitan.echolib.resourcenetworks.*
 import endertitan.echolib.resourcenetworks.capability.INetworkConsumer
 import endertitan.echolib.resourcenetworks.capability.INetworkProducer
 import endertitan.echolib.resourcenetworks.capability.NetworkCapability
 import net.minecraft.core.BlockPos
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.world.level.LevelAccessor
+import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.level.block.state.BlockState
 
 object NetworkEntityHelper {
@@ -47,18 +46,28 @@ object NetworkEntityHelper {
 
                 for (consumer in capability.consumers) {
                     val consumerCapability = consumer as NetworkCapability
-                    val pos = consumerCapability.blockEntity.blockPos
+                    val pos = (consumerCapability.blockEntity as BlockEntity).blockPos
                     list.add(pos.x)
                     list.add(pos.y)
                     list.add(pos.z)
                 }
 
                 nbt.putIntArray("$prefix-consumers", list.toIntArray())
+
+                val tags = capability.foundTags
+                val tagList = mutableListOf<Int>()
+
+                for (tag in tags) {
+                    tagList.add(tag.key.id)
+                    tagList.add(tag.value)
+                }
+
+                nbt.putIntArray("$prefix-tags", tagList.toIntArray())
             }
         }
     }
 
-    fun producerLoadNBT(nbt: CompoundTag, blockState: BlockState, consumerBlockPositions: MutableMap<Netsign, Array<BlockPos>>) {
+    fun producerLoadNBT(entity: INetworkMember, nbt: CompoundTag, blockState: BlockState, consumerBlockPositions: MutableMap<Netsign, Array<BlockPos>>) {
         val block = blockState.block as INetworkBlock
 
         for (network in block.connectToNetworks()) {
@@ -77,6 +86,19 @@ object NetworkEntityHelper {
             }
 
             consumerBlockPositions[network.netsign] = output.toTypedArray()
+
+            val capability = entity.getNetworkCapability(network.netsign)
+            if (capability is INetworkProducer<*>) {
+                val tagArray = nbt.getIntArray("$prefix-tags").toList().chunked(2)
+
+                for (chunk in tagArray) {
+                    val id = chunk[0]
+                    val value = chunk[1]
+
+                    val key = NetTagManager.tagIDs[id]!!
+                    capability.foundTags.add(NetworkTag(key, value))
+                }
+            }
         }
     }
 

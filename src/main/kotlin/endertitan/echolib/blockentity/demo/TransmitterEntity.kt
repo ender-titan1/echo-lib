@@ -7,6 +7,7 @@ import endertitan.echolib.init.BlockEntities
 import endertitan.echolib.resourcenetworks.capability.NetworkCapability
 import endertitan.echolib.resourcenetworks.INetworkMember
 import endertitan.echolib.resourcenetworks.Netsign
+import endertitan.echolib.resourcenetworks.NetworkTag
 import net.minecraft.core.BlockPos
 import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.level.block.state.BlockState
@@ -25,5 +26,12 @@ class TransmitterEntity(pos: BlockPos, state: BlockState) : BaseNetworkEntity(Bl
             return powerNetworkCapability
 
         return null
+    }
+
+    override fun getTags(netsign: Netsign): Array<NetworkTag> {
+        if (powerNetworkCapability.netsign == netsign)
+            return arrayOf(NetworkTag.required())
+
+        return super.getTags(netsign)
     }
 }

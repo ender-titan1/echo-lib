@@ -57,9 +57,13 @@ object ResourceNetworkManager {
             if (vertex is INetworkProducer<*>) {
                 val producer = vertex as INetworkProducer<*>
 
+                val tags: HashSet<NetworkTag> = hashSetOf()
                 val set = network.graph.searchForAll(vertex) {
+                    tags.addAll(it.blockEntity.getTags(network.netsign))
                     it is INetworkConsumer<*>
                 }
+
+                producer.foundTags = tags
 
                 if (set != null) {
                     producer.setConsumersGeneric(set as HashSet<INetworkConsumer<*>>)
