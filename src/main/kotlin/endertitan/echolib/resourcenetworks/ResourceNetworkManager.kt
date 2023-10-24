@@ -2,6 +2,7 @@ package endertitan.echolib.resourcenetworks
 
 import endertitan.echolib.resourcenetworks.capability.INetworkConsumer
 import endertitan.echolib.resourcenetworks.capability.INetworkProducer
+import endertitan.echolib.resourcenetworks.event.NetworkEventType
 import endertitan.echolib.resourcenetworks.value.INetworkValue
 import net.minecraft.core.BlockPos
 import net.minecraft.util.Tuple

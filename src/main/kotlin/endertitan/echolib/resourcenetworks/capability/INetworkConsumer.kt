@@ -11,6 +11,11 @@ interface INetworkConsumer<T : INetworkValue> {
         incomingResources[producer] = sup.invoke()
     }
 
+    @Suppress("unchecked_cast")
+    fun setResources(producer: INetworkProducer<*>, resources: INetworkValue) {
+        incomingResources[producer] = resources as T
+    }
+
     fun totalResources(netsign: Netsign): T {
         if (incomingResources.isEmpty())
             return ResourceNetworkManager.getSupplier<T>(netsign).invoke()

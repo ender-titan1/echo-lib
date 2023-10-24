@@ -1,4 +1,4 @@
-package endertitan.echolib.resourcenetworks
+package endertitan.echolib.resourcenetworks.event
 
 import net.minecraft.core.BlockPos
 import net.minecraft.world.level.LevelAccessor

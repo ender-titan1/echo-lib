@@ -1,4 +1,4 @@
-package endertitan.echolib.resourcenetworks
+package endertitan.echolib.resourcenetworks.event
 
 enum class NetworkEventType {
     ANY_ADDED,

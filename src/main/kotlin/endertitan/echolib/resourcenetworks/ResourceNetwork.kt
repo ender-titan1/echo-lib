@@ -3,6 +3,10 @@ package endertitan.echolib.resourcenetworks
 import endertitan.echolib.resourcenetworks.capability.INetworkConsumer
 import endertitan.echolib.resourcenetworks.capability.INetworkProducer
 import endertitan.echolib.resourcenetworks.capability.NetworkCapability
+import endertitan.echolib.resourcenetworks.distributor.BaseDistributor
+import endertitan.echolib.resourcenetworks.distributor.SequentialDistributor
+import endertitan.echolib.resourcenetworks.event.NetworkEvent
+import endertitan.echolib.resourcenetworks.event.NetworkEventType
 import endertitan.echolib.resourcenetworks.graph.Graph
 import endertitan.echolib.resourcenetworks.value.INetworkValue
 import net.minecraft.core.BlockPos
@@ -14,6 +18,8 @@ class ResourceNetwork<T : INetworkValue>(sign: Netsign, sup: () -> T) {
     val newValueSupplier: () -> T = sup
 
     val networkEvents: MutableMap<NetworkEventType, NetworkEventCallback> = mutableMapOf()
+    var distributor: BaseDistributor = SequentialDistributor()
+    var static: Boolean = false
 
     @Suppress("unchecked_cast")
     fun refreshFrom(vertex: NetworkCapability) {

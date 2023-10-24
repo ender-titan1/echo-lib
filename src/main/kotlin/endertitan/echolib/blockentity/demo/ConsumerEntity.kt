@@ -1,5 +1,6 @@
 package endertitan.echolib.blockentity.demo
 
+import endertitan.echolib.EchoLib
 import endertitan.echolib.blockentity.base.BaseNetworkEntity
 import endertitan.echolib.blockentity.base.BaseNetworkProducerEntity
 import endertitan.echolib.init.BlockEntities
@@ -14,7 +15,7 @@ import net.minecraft.world.level.block.state.BlockState
 
 class ConsumerEntity(pos: BlockPos, state: BlockState) : BaseNetworkEntity(BlockEntities.CONSUMER_ENTITY, pos, state) {
 
-    private val powerNetworkCapability: NetworkCapability = ConsumerNetworkCapability<IntValue>(Netsign.EchoLibCommon.ENERGY, this)
+    private val powerNetworkCapability: NetworkCapability = ConsumerNetworkCapability(EchoLib.POWER_NETWORK, this)
 
     companion object {
         fun new(pos: BlockPos, state: BlockState): ConsumerEntity {

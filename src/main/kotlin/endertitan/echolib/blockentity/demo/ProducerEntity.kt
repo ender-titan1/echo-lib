@@ -1,5 +1,6 @@
 package endertitan.echolib.blockentity.demo
 
+import endertitan.echolib.EchoLib
 import endertitan.echolib.blockentity.base.BaseNetworkProducerEntity
 import endertitan.echolib.init.BlockEntities
 import endertitan.echolib.resourcenetworks.capability.NetworkCapability
@@ -13,7 +14,7 @@ import net.minecraft.world.level.block.state.BlockState
 
 class ProducerEntity(pos: BlockPos, state: BlockState) : BaseNetworkProducerEntity(BlockEntities.PRODUCER_ENTITY, pos, state) {
 
-    private val powerNetworkCapability: ProducerNetworkCapability<IntValue> = ProducerNetworkCapability(Netsign.EchoLibCommon.ENERGY, this)
+    private val powerNetworkCapability: ProducerNetworkCapability<IntValue> = ProducerNetworkCapability(EchoLib.POWER_NETWORK, this)
 
     init {
         powerNetworkCapability.outgoingResources = IntValue(100)

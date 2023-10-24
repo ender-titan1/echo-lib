@@ -1,5 +1,6 @@
 package endertitan.echolib.blockentity.demo
 
+import endertitan.echolib.EchoLib
 import endertitan.echolib.blockentity.NetworkEntityHelper
 import endertitan.echolib.blockentity.base.BaseNetworkEntity
 import endertitan.echolib.init.BlockEntities
@@ -11,7 +12,7 @@ import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.level.block.state.BlockState
 
 class TransmitterEntity(pos: BlockPos, state: BlockState) : BaseNetworkEntity(BlockEntities.TRANSMITTER_ENTITY, pos, state) {
-    private val powerNetworkCapability: NetworkCapability = NetworkCapability(Netsign.EchoLibCommon.ENERGY, this)
+    private val powerNetworkCapability: NetworkCapability = NetworkCapability(EchoLib.POWER_NETWORK, this)
 
     companion object {
         fun new(pos: BlockPos, state: BlockState): TransmitterEntity {

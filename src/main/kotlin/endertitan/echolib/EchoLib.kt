@@ -5,6 +5,8 @@ import endertitan.echolib.init.BlockEntities
 import endertitan.echolib.init.Blocks
 import endertitan.echolib.init.Items
 import endertitan.echolib.resourcenetworks.*
+import endertitan.echolib.resourcenetworks.distributor.BaseDistributor
+import endertitan.echolib.resourcenetworks.event.NetworkEventType
 import endertitan.echolib.resourcenetworks.value.IntValue
 import net.minecraft.world.item.CreativeModeTabs
 import net.minecraft.world.item.ItemStack
@@ -28,9 +30,7 @@ object EchoLib {
         .listener(NetworkEventType.ANY_ADDED) {
             println("Added to network!")
         }
-        .listener(NetworkEventType.PRODUCER_REMOVED) {
-            println("Producer removed!")
-        }
+        .static()
         .build()
 
     init {
