@@ -5,11 +5,15 @@ import endertitan.echolib.resourcenetworks.capability.INetworkProducer
 import endertitan.echolib.resourcenetworks.capability.NetworkCapability
 import endertitan.echolib.resourcenetworks.graph.Graph
 import endertitan.echolib.resourcenetworks.value.INetworkValue
+import net.minecraft.core.BlockPos
+import net.minecraft.world.level.LevelAccessor
 
 class ResourceNetwork<T : INetworkValue>(sign: Netsign, sup: () -> T) {
     val netsign: Netsign = sign;
     val graph: Graph<NetworkCapability> = Graph()
     val newValueSupplier: () -> T = sup
+
+    val networkEvents: MutableMap<NetworkEventType, NetworkEventCallback> = mutableMapOf()
 
     @Suppress("unchecked_cast")
     fun refreshFrom(vertex: NetworkCapability) {
@@ -38,5 +42,13 @@ class ResourceNetwork<T : INetworkValue>(sign: Netsign, sup: () -> T) {
         val connected = graph.getAmountConnected(vertex)
         graph.unmarkAll()
         return connected
+    }
+
+    fun callEvent(type: NetworkEventType, pos: BlockPos, level: LevelAccessor): Boolean {
+        networkEvents.getOrElse(type) {
+            return false
+        }.invoke(NetworkEvent(type, pos, level))
+
+        return true
     }
 }

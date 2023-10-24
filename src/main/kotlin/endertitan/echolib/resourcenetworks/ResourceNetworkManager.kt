@@ -11,12 +11,6 @@ import net.minecraft.world.level.block.state.BlockState
 object ResourceNetworkManager {
     var networks: HashSet<ResourceNetwork<*>> = hashSetOf()
 
-    fun <T : INetworkValue> newNetwork(netsign: Netsign, sup: () -> T): ResourceNetwork<T> {
-        val network = ResourceNetwork(netsign, sup)
-        networks.add(network)
-        return network
-    }
-
     @Suppress("unchecked_cast")
     fun <T : INetworkValue> getSupplier(netsign: Netsign): () -> T {
         return networks.find {
@@ -97,6 +91,22 @@ object ResourceNetworkManager {
                 network.refreshFrom(vertex)
                 network.graph.unmarkAll()
             }
+
+            network.callEvent(NetworkEventType.ANY_ADDED, pos, level)
+
+            when (vertex) {
+                is INetworkProducer<*> -> {
+                    network.callEvent(NetworkEventType.PRODUCER_ADDED, pos, level)
+                }
+
+                is INetworkConsumer<*> -> {
+                    network.callEvent(NetworkEventType.CONSUMER_ADDED, pos, level)
+                }
+
+                else -> {
+                    network.callEvent(NetworkEventType.TRANSMITTER_ADDED, pos, level)
+                }
+            }
         }
     }
 
@@ -123,6 +133,22 @@ object ResourceNetworkManager {
             network.graph.removeNode(blockEntity.getNetworkCapability(network.netsign)!!)
 
             val capability = blockEntity.getNetworkCapability(network.netsign)
+
+            network.callEvent(NetworkEventType.ANY_REMOVED, pos, level)
+
+            when (capability) {
+                is INetworkProducer<*> -> {
+                    network.callEvent(NetworkEventType.PRODUCER_REMOVED, pos, level)
+                }
+
+                is INetworkConsumer<*> -> {
+                    network.callEvent(NetworkEventType.CONSUMER_REMOVED, pos, level)
+                }
+
+                else -> {
+                    network.callEvent(NetworkEventType.TRANSMITTER_REMOVED, pos, level)
+                }
+            }
 
             // This could probably be more efficient
             if (capability is INetworkConsumer<*>) {

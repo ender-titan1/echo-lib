@@ -5,7 +5,6 @@ import endertitan.echolib.init.BlockEntities
 import endertitan.echolib.init.Blocks
 import endertitan.echolib.init.Items
 import endertitan.echolib.resourcenetworks.*
-import endertitan.echolib.resourcenetworks.value.FloatValue
 import endertitan.echolib.resourcenetworks.value.IntValue
 import net.minecraft.world.item.CreativeModeTabs
 import net.minecraft.world.item.ItemStack
@@ -25,9 +24,14 @@ object EchoLib {
 
     val LOGGER: Logger = LogManager.getLogger(ID)
 
-    val POWER_NETWORK = ResourceNetworkManager.newNetwork(Netsign.EchoLibCommon.ENERGY) {
-        IntValue(0)
-    }
+    val POWER_NETWORK = NetworkBuilder(Netsign.EchoLibCommon.ENERGY, IntValue::zero)
+        .listener(NetworkEventType.ANY_ADDED) {
+            println("Added to network!")
+        }
+        .listener(NetworkEventType.PRODUCER_REMOVED) {
+            println("Producer removed!")
+        }
+        .build()
 
     init {
         LOGGER.log(Level.INFO, "EchoLib initializing...")

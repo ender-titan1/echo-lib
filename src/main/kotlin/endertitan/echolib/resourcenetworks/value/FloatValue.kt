@@ -18,4 +18,10 @@ class FloatValue(var value: Float) : INetworkValue {
     override fun toString(): String {
         return value.toString()
     }
+
+    companion object {
+        fun zero(): FloatValue {
+            return FloatValue(0.0f)
+        }
+    }
 }

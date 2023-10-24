@@ -18,4 +18,10 @@ class IntValue(var value: Int) : INetworkValue {
     override fun toString(): String {
         return value.toString()
     }
+
+    companion object {
+        fun zero(): IntValue {
+            return IntValue(0)
+        }
+    }
 }
