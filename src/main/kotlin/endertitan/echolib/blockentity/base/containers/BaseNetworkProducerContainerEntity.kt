@@ -1,7 +1,7 @@
 package endertitan.echolib.blockentity.base.containers
 
 import endertitan.echolib.blockentity.NetworkEntityHelper
-import endertitan.echolib.resourcenetworks.Netsign
+import endertitan.echolib.resourcenetworks.core.Netsign
 import net.minecraft.core.BlockPos
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.world.level.block.entity.BlockEntityType

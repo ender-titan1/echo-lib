@@ -1,6 +1,8 @@
-package endertitan.echolib.resourcenetworks
+package endertitan.echolib.resourcenetworks.interfaces
 
+import endertitan.echolib.resourcenetworks.core.Netsign
 import endertitan.echolib.resourcenetworks.capability.NetworkCapability
+import endertitan.echolib.resourcenetworks.tags.NetworkTag
 
 
 interface INetworkMember {

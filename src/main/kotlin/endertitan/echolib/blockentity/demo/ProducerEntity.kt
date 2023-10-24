@@ -4,7 +4,7 @@ import endertitan.echolib.EchoLib
 import endertitan.echolib.blockentity.base.BaseNetworkProducerEntity
 import endertitan.echolib.init.BlockEntities
 import endertitan.echolib.resourcenetworks.capability.NetworkCapability
-import endertitan.echolib.resourcenetworks.Netsign
+import endertitan.echolib.resourcenetworks.core.Netsign
 import endertitan.echolib.resourcenetworks.capability.ConsumerNetworkCapability
 import endertitan.echolib.resourcenetworks.capability.ProducerNetworkCapability
 import endertitan.echolib.resourcenetworks.value.FloatValue

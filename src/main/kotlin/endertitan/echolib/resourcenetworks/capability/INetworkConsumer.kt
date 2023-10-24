@@ -1,8 +1,8 @@
 package endertitan.echolib.resourcenetworks.capability
 
 import endertitan.echolib.resourcenetworks.value.INetworkValue
-import endertitan.echolib.resourcenetworks.Netsign
-import endertitan.echolib.resourcenetworks.ResourceNetworkManager
+import endertitan.echolib.resourcenetworks.core.Netsign
+import endertitan.echolib.resourcenetworks.core.ResourceNetworkManager
 
 interface INetworkConsumer<T : INetworkValue> {
     var incomingResources: HashMap<INetworkProducer<*>, T>

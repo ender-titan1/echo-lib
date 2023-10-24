@@ -1,11 +1,13 @@
 package endertitan.echolib
 
-import endertitan.echolib.resourcenetworks.INetworkBlock
+import endertitan.echolib.resourcenetworks.interfaces.INetworkBlock
 import endertitan.echolib.init.BlockEntities
 import endertitan.echolib.init.Blocks
 import endertitan.echolib.init.Items
 import endertitan.echolib.resourcenetworks.*
-import endertitan.echolib.resourcenetworks.distributor.BaseDistributor
+import endertitan.echolib.resourcenetworks.core.Netsign
+import endertitan.echolib.resourcenetworks.core.NetworkBuilder
+import endertitan.echolib.resourcenetworks.core.ResourceNetworkManager
 import endertitan.echolib.resourcenetworks.event.NetworkEventType
 import endertitan.echolib.resourcenetworks.value.IntValue
 import net.minecraft.world.item.CreativeModeTabs

@@ -1,4 +1,4 @@
 package endertitan.echolib.resourcenetworks.distributor
 
-class SequentialDistributor : BaseDistributor() {
+open class SequentialDistributor : BaseDistributor() {
 }

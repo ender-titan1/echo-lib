@@ -1,10 +1,9 @@
 package endertitan.echolib.resourcenetworks.capability
 
-import endertitan.echolib.resourcenetworks.INetworkMember
-import endertitan.echolib.resourcenetworks.Netsign
-import endertitan.echolib.resourcenetworks.ResourceNetwork
+import endertitan.echolib.resourcenetworks.interfaces.INetworkMember
+import endertitan.echolib.resourcenetworks.core.Netsign
+import endertitan.echolib.resourcenetworks.core.ResourceNetwork
 import endertitan.echolib.resourcenetworks.graph.IVertex
-import net.minecraft.world.level.block.entity.BlockEntity
 
 open class NetworkCapability(net: ResourceNetwork<*>, val blockEntity: INetworkMember) : IVertex {
     val netsign: Netsign = net.netsign

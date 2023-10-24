@@ -1,4 +1,4 @@
-package endertitan.echolib.resourcenetworks
+package endertitan.echolib.resourcenetworks.tags
 
 data class NetworkTag(val key: NetTagKey, val value: Int) {
     companion object {

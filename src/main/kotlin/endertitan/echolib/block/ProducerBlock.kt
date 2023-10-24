@@ -2,9 +2,9 @@ package endertitan.echolib.block
 
 import endertitan.echolib.EchoLib
 import endertitan.echolib.blockentity.demo.ProducerEntity
-import endertitan.echolib.resourcenetworks.INetworkBlock
-import endertitan.echolib.resourcenetworks.ResourceNetwork
-import endertitan.echolib.resourcenetworks.INetworkMember
+import endertitan.echolib.resourcenetworks.interfaces.INetworkBlock
+import endertitan.echolib.resourcenetworks.core.ResourceNetwork
+import endertitan.echolib.resourcenetworks.interfaces.INetworkMember
 import endertitan.echolib.resourcenetworks.capability.INetworkConsumer
 import endertitan.echolib.resourcenetworks.capability.INetworkProducer
 import endertitan.echolib.resourcenetworks.value.IntValue

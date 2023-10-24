@@ -1,6 +1,6 @@
 package endertitan.echolib.resourcenetworks.capability
 
-import endertitan.echolib.resourcenetworks.NetworkTag
+import endertitan.echolib.resourcenetworks.tags.NetworkTag
 import endertitan.echolib.resourcenetworks.value.INetworkValue
 
 @Suppress("unchecked_cast")

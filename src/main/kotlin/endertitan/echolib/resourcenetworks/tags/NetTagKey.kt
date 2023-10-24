@@ -1,4 +1,4 @@
-package endertitan.echolib.resourcenetworks
+package endertitan.echolib.resourcenetworks.tags
 
 import endertitan.echolib.EchoLib
 import net.minecraft.resources.ResourceLocation

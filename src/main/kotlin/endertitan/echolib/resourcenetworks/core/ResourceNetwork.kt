@@ -1,4 +1,4 @@
-package endertitan.echolib.resourcenetworks
+package endertitan.echolib.resourcenetworks.core
 
 import endertitan.echolib.resourcenetworks.capability.INetworkConsumer
 import endertitan.echolib.resourcenetworks.capability.INetworkProducer
@@ -8,6 +8,7 @@ import endertitan.echolib.resourcenetworks.distributor.SequentialDistributor
 import endertitan.echolib.resourcenetworks.event.NetworkEvent
 import endertitan.echolib.resourcenetworks.event.NetworkEventType
 import endertitan.echolib.resourcenetworks.graph.Graph
+import endertitan.echolib.resourcenetworks.tags.NetworkTag
 import endertitan.echolib.resourcenetworks.value.INetworkValue
 import net.minecraft.core.BlockPos
 import net.minecraft.world.level.LevelAccessor

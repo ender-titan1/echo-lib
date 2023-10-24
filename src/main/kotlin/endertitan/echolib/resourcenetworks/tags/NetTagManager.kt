@@ -1,4 +1,4 @@
-package endertitan.echolib.resourcenetworks
+package endertitan.echolib.resourcenetworks.tags
 
 object NetTagManager {
     val tagIDs: MutableMap<Int, NetTagKey> = mutableMapOf()
