@@ -6,6 +6,7 @@ import endertitan.echolib.resourcenetworks.core.ResourceNetworkManager
 
 interface INetworkConsumer<T : INetworkValue> {
     var incomingResources: HashMap<INetworkProducer<*>, T>
+    var consumerPriority: Int
 
     fun removeResourcesFromProducer(producer: INetworkProducer<*>, sup: () -> T) {
         incomingResources[producer] = sup.invoke()

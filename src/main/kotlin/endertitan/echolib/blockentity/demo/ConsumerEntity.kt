@@ -16,17 +16,18 @@ import net.minecraft.world.level.block.state.BlockState
 class ConsumerEntity(pos: BlockPos, state: BlockState) : BaseNetworkEntity(BlockEntities.CONSUMER_ENTITY, pos, state) {
 
     private val powerNetworkCapability: NetworkCapability = ConsumerNetworkCapability(EchoLib.POWER_NETWORK, this)
-
-    companion object {
-        fun new(pos: BlockPos, state: BlockState): ConsumerEntity {
-            return ConsumerEntity(pos, state)
-        }
-    }
+    override var isValidMember: Boolean = true
 
     override fun getNetworkCapability(netsign: Netsign): NetworkCapability? {
         if (powerNetworkCapability.netsign == netsign)
             return powerNetworkCapability
 
         return null
+    }
+
+    companion object {
+        fun new(pos: BlockPos, state: BlockState): ConsumerEntity {
+            return ConsumerEntity(pos, state)
+        }
     }
 }

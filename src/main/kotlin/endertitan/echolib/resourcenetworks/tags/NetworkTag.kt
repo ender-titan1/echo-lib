@@ -12,18 +12,18 @@ import endertitan.echolib.resourcenetworks.capability.INetworkProducer
  * @see NetTagKey
  * @see NetTagManager
  */
-data class NetworkTag(val key: NetTagKey, val value: Int) {
+data class NetworkTag<T>(val key: NetTagKey, val value: T) {
     companion object {
-        fun maxTransferRate(value: Int): NetworkTag {
-            return NetworkTag(NetTagKey.MAX_TRANSFER_RATE, value)
+        fun <T> maxThroughput(value: T): NetworkTag<T> {
+            return NetworkTag(NetTagKey.MAX_THROUGHPUT, value)
         }
 
-        fun channels(value: Int): NetworkTag {
-            return NetworkTag(NetTagKey.CHANNELS, value)
+        fun usedChannels(value: Int): NetworkTag<Int> {
+            return NetworkTag(NetTagKey.USED_CHANNELS, value)
         }
 
-        fun required(): NetworkTag {
-            return NetworkTag(NetTagKey.REQUIRED, 0)
+        fun providedChannels(value: Int): NetworkTag<Int> {
+            return NetworkTag(NetTagKey.PROVIDED_CHANNELS, value)
         }
     }
 }

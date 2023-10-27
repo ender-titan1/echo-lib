@@ -6,4 +6,5 @@ import endertitan.echolib.resourcenetworks.core.ResourceNetwork
 
 class ConsumerNetworkCapability<T : INetworkValue>(net: ResourceNetwork<T>, be: INetworkMember) : NetworkCapability(net, be), INetworkConsumer<T> {
     override var incomingResources: HashMap<INetworkProducer<*>, T> = hashMapOf()
+    override var consumerPriority: Int = 0
 }

@@ -15,6 +15,7 @@ import net.minecraft.world.level.block.state.BlockState
 class ProducerEntity(pos: BlockPos, state: BlockState) : BaseNetworkProducerEntity(BlockEntities.PRODUCER_ENTITY, pos, state) {
 
     private val powerNetworkCapability: ProducerNetworkCapability<IntValue> = ProducerNetworkCapability(EchoLib.POWER_NETWORK, this)
+    override var isValidMember: Boolean = true
 
     init {
         powerNetworkCapability.outgoingResources = IntValue(100)

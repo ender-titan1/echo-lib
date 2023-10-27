@@ -9,12 +9,14 @@ import endertitan.echolib.resourcenetworks.core.ResourceNetwork
  *  @see IntValue
  *  @see FloatValue
  */
-interface INetworkValue {
+interface INetworkValue : Comparable<INetworkValue> {
     operator fun plusAssign(other: INetworkValue)
 
     operator fun minusAssign(other: INetworkValue)
 
     operator fun div(amount: Int): INetworkValue
+
+    override operator fun compareTo(other: INetworkValue): Int
 
     override fun toString(): String
 }

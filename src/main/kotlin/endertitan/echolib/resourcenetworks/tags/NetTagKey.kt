@@ -13,8 +13,8 @@ class NetTagKey(modid: String, string: String, val id: Int) {
     val key: ResourceLocation = ResourceLocation(modid, string)
 
     companion object {
-        val MAX_TRANSFER_RATE = NetTagManager.newTagKey(EchoLib.ID, "max_transfer_rate")
-        val CHANNELS = NetTagManager.newTagKey(EchoLib.ID, "channels")
-        val REQUIRED = NetTagManager.newTagKey(EchoLib.ID, "required")
+        val MAX_THROUGHPUT = NetTagManager.newTagKey(EchoLib.ID, "max_transfer_rate")
+        val USED_CHANNELS = NetTagManager.newTagKey(EchoLib.ID, "used_channels")
+        val PROVIDED_CHANNELS = NetTagManager.newTagKey(EchoLib.ID, "provided_channels")
     }
 }

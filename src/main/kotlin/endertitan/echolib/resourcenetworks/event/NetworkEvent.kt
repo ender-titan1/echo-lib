@@ -15,4 +15,4 @@ import endertitan.echolib.resourcenetworks.core.NetworkBuilder
  * @see NetworkEventType
  * @see NetworkBuilder
  */
-data class NetworkEvent(val type: NetworkEventType, val pos: BlockPos, val level: LevelAccessor)
+data class NetworkEvent(val type: NetworkEventType, val network: ResourceNetwork<*>, val pos: BlockPos?, val level: LevelAccessor?)

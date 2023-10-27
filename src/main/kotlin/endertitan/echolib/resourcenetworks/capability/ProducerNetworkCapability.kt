@@ -7,23 +7,29 @@ import endertitan.echolib.resourcenetworks.interfaces.INetworkMember
 import endertitan.echolib.resourcenetworks.tags.NetworkTag
 import endertitan.echolib.resourcenetworks.value.INetworkValue
 
-typealias TagHandler<T> = (T, HashSet<NetworkTag>) -> T
-
-class ProducerNetworkCapability<T : INetworkValue>(val net: ResourceNetwork<T>, be: INetworkMember, val tagHandler: TagHandler<T>)
+class ProducerNetworkCapability<T : INetworkValue>(val net: ResourceNetwork<T>, be: INetworkMember)
     : NetworkCapability(net, be), INetworkProducer<T> {
 
+    private val zero: T = ResourceNetworkManager.getSupplier<T>(net.netsign)()
+
     override var consumers: HashSet<INetworkConsumer<T>> = hashSetOf()
-    override var foundTags: HashSet<NetworkTag> = hashSetOf()
 
-    constructor(net: ResourceNetwork<T>, be: INetworkMember) : this(net, be, { r, _ -> r})
-
-    override var outgoingResources: T = ResourceNetworkManager.getSupplier<T>(net.netsign).invoke()
+    override var outgoingResources: T = zero
         set(value) {
             field = value
             distribute()
         }
 
+    override var limitedTo: T = zero
+    override var producerPriority: Int = 0
+
     override fun distribute() {
-        net.distributor.distribute(this, tagHandler(outgoingResources, foundTags), consumers)
+        if (!valid) {
+            net.distributor.distribute(this, zero, consumers)
+        } else if (limitedTo > outgoingResources) {
+            net.distributor.distribute(this, limitedTo, consumers)
+        } else {
+            net.distributor.distribute(this, outgoingResources, consumers)
+        }
     }
 }

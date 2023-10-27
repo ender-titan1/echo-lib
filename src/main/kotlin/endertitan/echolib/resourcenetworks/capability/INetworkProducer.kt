@@ -6,8 +6,9 @@ import endertitan.echolib.resourcenetworks.value.INetworkValue
 @Suppress("unchecked_cast")
 interface INetworkProducer<T : INetworkValue> {
     var consumers: HashSet<INetworkConsumer<T>>
-    var foundTags: HashSet<NetworkTag>
     var outgoingResources: T
+    var limitedTo: T
+    var producerPriority: Int
 
     /**
      * DO NOT OVERRIDE

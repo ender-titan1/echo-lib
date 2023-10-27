@@ -11,9 +11,7 @@ import net.minecraft.world.level.block.state.BlockState
 
 class TransmitterEntity(pos: BlockPos, state: BlockState) : BaseNetworkEntity(BlockEntities.TRANSMITTER_ENTITY, pos, state) {
     private val powerNetworkCapability: NetworkCapability = NetworkCapability(EchoLib.POWER_NETWORK, this)
-
-    override val forceNetworkUpdate: Boolean
-        get() = true
+    override var isValidMember: Boolean = true
 
     companion object {
         fun new(pos: BlockPos, state: BlockState): TransmitterEntity {
@@ -26,12 +24,5 @@ class TransmitterEntity(pos: BlockPos, state: BlockState) : BaseNetworkEntity(Bl
             return powerNetworkCapability
 
         return null
-    }
-
-    override fun getNetworkTags(netsign: Netsign): Array<NetworkTag> {
-        if (powerNetworkCapability.netsign == netsign)
-            return arrayOf(NetworkTag.required())
-
-        return super.getNetworkTags(netsign)
     }
 }

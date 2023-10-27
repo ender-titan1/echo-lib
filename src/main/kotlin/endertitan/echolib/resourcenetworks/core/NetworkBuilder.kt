@@ -5,6 +5,7 @@ import endertitan.echolib.resourcenetworks.distributor.StaticDistributor
 import endertitan.echolib.resourcenetworks.event.NetworkEvent
 import endertitan.echolib.resourcenetworks.event.NetworkEventType
 import endertitan.echolib.resourcenetworks.value.INetworkValue
+import net.minecraft.world.level.block.entity.BlockEntityType
 
 typealias NetworkEventCallback = (NetworkEvent) -> Unit
 
@@ -20,6 +21,25 @@ class NetworkBuilder<T : INetworkValue>(val netsign: Netsign, private val sup: (
         }
 
         return network
+    }
+
+    fun limitThroughput(): NetworkBuilder<T> {
+        network.constrains.add(NetworkConstraint.LIMIT_THROUGHPUT)
+        return this
+    }
+
+    fun limitChannels(defaultChannels: Int): NetworkBuilder<T> {
+        network.constrains.add(NetworkConstraint.LIMIT_CHANNELS)
+        network.defaultChannels = defaultChannels
+
+        return this
+    }
+
+    fun require(blocks: Array<BlockEntityType<*>>): NetworkBuilder<T> {
+        network.constrains.add(NetworkConstraint.REQUIRE_BLOCKS)
+        network.requiredBlocks.addAll(blocks)
+
+        return this
     }
 
     fun static(): NetworkBuilder<T> {

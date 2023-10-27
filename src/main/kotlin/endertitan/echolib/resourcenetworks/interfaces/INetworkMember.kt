@@ -11,12 +11,7 @@ import endertitan.echolib.resourcenetworks.core.ResourceNetwork
  */
 interface INetworkMember {
 
-    /**
-     * If true, forces the network to update every time it connects, bypassing any optimizations.
-     * This is useful when having blocks with [NetworkTag]s that need to *always* update the network
-     */
-    val forceNetworkUpdate: Boolean
-        get() = false
+    var isValidMember: Boolean
 
     /**
      * Specifies what [NetworkCapability]'s of this entity connect to which networks
@@ -34,9 +29,12 @@ interface INetworkMember {
      * be set for different netsigns
      * @return An array of all tags valid for the network
      *
-     * @see forceNetworkUpdate
      */
-    fun getNetworkTags(netsign: Netsign): Array<NetworkTag> {
+    fun exportTags(netsign: Netsign): Array<NetworkTag<*>> {
         return arrayOf()
+    }
+
+    fun setValid(value: Boolean) {
+        isValidMember = value
     }
 }
