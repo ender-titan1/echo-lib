@@ -17,4 +17,8 @@ open class BaseDistributor {
             consumer.setResources(producer, forEach)
         }
     }
+
+    override fun toString(): String {
+        return "BaseDistributor";
+    }
 }

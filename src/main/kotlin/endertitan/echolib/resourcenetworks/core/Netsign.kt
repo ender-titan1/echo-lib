@@ -27,6 +27,10 @@ class Netsign(modid: String, network: String) {
         return sign.hashCode()
     }
 
+    override fun toString(): String {
+        return sign.toString()
+    }
+
     /**
      * Basic Netsigns used by EchoLib for compatibility between mods
      */

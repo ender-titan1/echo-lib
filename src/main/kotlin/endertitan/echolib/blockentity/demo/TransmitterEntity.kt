@@ -25,4 +25,8 @@ class TransmitterEntity(pos: BlockPos, state: BlockState) : BaseNetworkEntity(Bl
 
         return null
     }
+
+    override fun exportTags(netsign: Netsign): Array<NetworkTag<*>> {
+        return arrayOf(NetworkTag.providedChannels(10))
+    }
 }

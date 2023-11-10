@@ -13,6 +13,11 @@ import endertitan.echolib.resourcenetworks.capability.INetworkProducer
  * @see NetTagManager
  */
 data class NetworkTag<T>(val key: NetTagKey, val value: T) {
+
+    override fun toString(): String {
+        return "($key):$value"
+    }
+
     companion object {
         fun <T> maxThroughput(value: T): NetworkTag<T> {
             return NetworkTag(NetTagKey.MAX_THROUGHPUT, value)

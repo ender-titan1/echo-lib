@@ -58,16 +58,6 @@ object NetworkEntityHelper {
                 }
 
                 nbt.putIntArray("$prefix-consumers", list.toIntArray())
-
-                val tags = capability.foundTags
-                val tagList = mutableListOf<Int>()
-
-                for (tag in tags) {
-                    tagList.add(tag.key.id)
-                    tagList.add(tag.value)
-                }
-
-                nbt.putIntArray("$prefix-tags", tagList.toIntArray())
             }
         }
     }
@@ -91,19 +81,6 @@ object NetworkEntityHelper {
             }
 
             consumerBlockPositions[network.netsign] = output.toTypedArray()
-
-            val capability = entity.getNetworkCapability(network.netsign)
-            if (capability is INetworkProducer<*>) {
-                val tagArray = nbt.getIntArray("$prefix-tags").toList().chunked(2)
-
-                for (chunk in tagArray) {
-                    val id = chunk[0]
-                    val value = chunk[1]
-
-                    val key = NetTagManager.tagIDs[id]!!
-                    capability.foundTags.add(NetworkTag(key, value))
-                }
-            }
         }
     }
 

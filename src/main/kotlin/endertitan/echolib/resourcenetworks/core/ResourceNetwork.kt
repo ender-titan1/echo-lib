@@ -35,7 +35,7 @@ class ResourceNetwork<T : INetworkValue>(sign: Netsign, sup: () -> T) {
         val producers: HashSet<INetworkProducer<T>> = hashSetOf()
         val consumers: HashSet<INetworkConsumer<T>> = hashSetOf()
         val tagHandlers: HashSet<ITagHandler> = hashSetOf()
-        val tags: HashSet<NetworkTag<*>> = hashSetOf()
+        val tags: MutableList<NetworkTag<*>> = mutableListOf()
 
         val foundRequired: HashSet<BlockEntityType<*>> = hashSetOf()
 
@@ -123,6 +123,16 @@ class ResourceNetwork<T : INetworkValue>(sign: Netsign, sup: () -> T) {
         val connected = graph.getAmountConnected(vertex)
         graph.unmarkAll()
         return connected
+    }
+
+    fun getTagsFrom(vertex: NetworkCapability): MutableList<NetworkTag<*>> {
+        val tags: MutableList<NetworkTag<*>> = mutableListOf()
+
+        graph.doForEachConnected(vertex) {
+            tags.addAll(it.blockEntity.exportTags(vertex.netsign))
+        }
+
+        return tags
     }
 
     fun callEvent(type: NetworkEventType, pos: BlockPos?, level: LevelAccessor?): Boolean {

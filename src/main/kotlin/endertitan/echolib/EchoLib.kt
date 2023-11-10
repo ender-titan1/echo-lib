@@ -26,7 +26,7 @@ import thedarkcolour.kotlinforforge.forge.MOD_BUS
 object EchoLib {
     const val ID = "echolib"
 
-    val LOGGER: Logger = LogManager.getLogger(ID)
+    private val LOGGER: Logger = LogManager.getLogger(ID)
 
     val POWER_NETWORK = NetworkBuilder(Netsign.EchoLibCommon.ENERGY, IntValue::zero)
         .listener(NetworkEventType.ANY_ADDED) {
@@ -59,6 +59,7 @@ object EchoLib {
             event.accept(ItemStack(Blocks.TRANSMITTER, 1))
             event.accept(ItemStack(Blocks.CONSUMER, 1))
             event.accept(ItemStack(Blocks.PRODUCER, 1))
+            event.accept(ItemStack(Items.NETWORK_DEBUGGER, 1))
         }
     }
 

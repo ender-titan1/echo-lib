@@ -12,4 +12,8 @@ open class StaticDistributor : BaseDistributor() {
             consumer.setResources(producer, available)
         }
     }
+
+    override fun toString(): String {
+        return "SequentialDistributor";
+    }
 }

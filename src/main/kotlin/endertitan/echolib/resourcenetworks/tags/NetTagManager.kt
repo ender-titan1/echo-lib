@@ -7,7 +7,7 @@ package endertitan.echolib.resourcenetworks.tags
  * @see NetworkTag
  */
 object NetTagManager {
-    val tagIDs: MutableMap<Int, NetTagKey> = mutableMapOf()
+    private val tagIDs: MutableMap<Int, NetTagKey> = mutableMapOf()
     private var nextID: Int = 0
 
     /**

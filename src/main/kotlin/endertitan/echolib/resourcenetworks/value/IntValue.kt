@@ -9,7 +9,7 @@ class IntValue(var value: Int) : INetworkValue {
     }
 
     override operator fun minusAssign(other: INetworkValue) {
-        if (other === this)
+        if (other is IntValue)
             value -= other.value
     }
 
@@ -18,7 +18,7 @@ class IntValue(var value: Int) : INetworkValue {
     }
 
     override operator fun compareTo(other: INetworkValue): Int {
-        if (other !== this)
+        if (other !is IntValue)
             throw OperationNotSupportedException("Attempted to compare two INetworkValues of different types")
 
         return value.compareTo(other.value)

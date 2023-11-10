@@ -4,12 +4,12 @@ import javax.naming.OperationNotSupportedException
 
 class FloatValue(var value: Float) : INetworkValue {
     override operator fun plusAssign(other: INetworkValue) {
-        if (other === this)
+        if (other is FloatValue)
             value += other.value
     }
 
     override operator fun minusAssign(other: INetworkValue) {
-        if (other === this)
+        if (other is FloatValue)
             value -= other.value
     }
 
@@ -18,7 +18,7 @@ class FloatValue(var value: Float) : INetworkValue {
     }
 
     override fun compareTo(other: INetworkValue): Int {
-        if (other !== this)
+        if (other !is FloatValue)
             throw OperationNotSupportedException("Attempted to compare two INetworkValues of different types")
 
         return value.compareTo(other.value)

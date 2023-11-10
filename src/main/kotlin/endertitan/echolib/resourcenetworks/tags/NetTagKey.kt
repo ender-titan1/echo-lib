@@ -12,6 +12,10 @@ import net.minecraft.resources.ResourceLocation
 class NetTagKey(modid: String, string: String, val id: Int) {
     val key: ResourceLocation = ResourceLocation(modid, string)
 
+    override fun toString(): String {
+        return key.toString()
+    }
+
     companion object {
         val MAX_THROUGHPUT = NetTagManager.newTagKey(EchoLib.ID, "max_transfer_rate")
         val USED_CHANNELS = NetTagManager.newTagKey(EchoLib.ID, "used_channels")
