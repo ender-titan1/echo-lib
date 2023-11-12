@@ -2,14 +2,10 @@ package endertitan.echolib.blockentity.demo
 
 import endertitan.echolib.EchoLib
 import endertitan.echolib.blockentity.base.BaseNetworkEntity
-import endertitan.echolib.blockentity.base.BaseNetworkProducerEntity
 import endertitan.echolib.init.BlockEntities
-import endertitan.echolib.resourcenetworks.capability.NetworkCapability
+import endertitan.echolib.resourcenetworks.capability.base.NetworkCapability
 import endertitan.echolib.resourcenetworks.core.Netsign
-import endertitan.echolib.resourcenetworks.capability.ConsumerNetworkCapability
-import endertitan.echolib.resourcenetworks.capability.ProducerNetworkCapability
-import endertitan.echolib.resourcenetworks.value.FloatValue
-import endertitan.echolib.resourcenetworks.value.IntValue
+import endertitan.echolib.resourcenetworks.capability.base.ConsumerNetworkCapability
 import net.minecraft.core.BlockPos
 import net.minecraft.world.level.block.state.BlockState
 

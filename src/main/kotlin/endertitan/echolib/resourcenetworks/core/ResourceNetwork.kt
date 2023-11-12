@@ -1,8 +1,8 @@
 package endertitan.echolib.resourcenetworks.core
 
-import endertitan.echolib.resourcenetworks.capability.INetworkConsumer
-import endertitan.echolib.resourcenetworks.capability.INetworkProducer
-import endertitan.echolib.resourcenetworks.capability.NetworkCapability
+import endertitan.echolib.resourcenetworks.capability.interfaces.INetworkConsumer
+import endertitan.echolib.resourcenetworks.capability.interfaces.INetworkProducer
+import endertitan.echolib.resourcenetworks.capability.base.NetworkCapability
 import endertitan.echolib.resourcenetworks.distributor.BaseDistributor
 import endertitan.echolib.resourcenetworks.distributor.SequentialDistributor
 import endertitan.echolib.resourcenetworks.event.NetworkEvent
@@ -23,7 +23,7 @@ class ResourceNetwork<T : INetworkValue>(sign: Netsign, sup: () -> T) {
     val zeroSupplier: () -> T = sup
 
     val networkEvents: MutableMap<NetworkEventType, NetworkEventCallback> = mutableMapOf()
-    var distributor: BaseDistributor = SequentialDistributor()
+    var distributor: BaseDistributor = SequentialDistributor(this)
     var static: Boolean = false
     var constrains: HashSet<NetworkConstraint> = hashSetOf()
     var defaultChannels: Int = 0

@@ -1,4 +1,4 @@
-package endertitan.echolib.resourcenetworks.capability
+package endertitan.echolib.resourcenetworks.capability.interfaces
 
 import endertitan.echolib.resourcenetworks.value.INetworkValue
 

@@ -1,8 +1,7 @@
 package endertitan.echolib.item
 
-import endertitan.echolib.resourcenetworks.capability.INetworkConsumer
-import endertitan.echolib.resourcenetworks.capability.INetworkProducer
-import endertitan.echolib.resourcenetworks.core.ResourceNetwork
+import endertitan.echolib.resourcenetworks.capability.interfaces.INetworkConsumer
+import endertitan.echolib.resourcenetworks.capability.interfaces.INetworkProducer
 import endertitan.echolib.resourcenetworks.interfaces.INetworkBlock
 import endertitan.echolib.resourcenetworks.interfaces.INetworkMember
 import net.minecraft.network.chat.Component

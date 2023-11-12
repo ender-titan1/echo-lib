@@ -1,13 +1,12 @@
-package endertitan.echolib.resourcenetworks.capability
+package endertitan.echolib.resourcenetworks.capability.base
 
-import endertitan.echolib.resourcenetworks.*
+import endertitan.echolib.resourcenetworks.capability.interfaces.INetworkConsumer
+import endertitan.echolib.resourcenetworks.capability.interfaces.INetworkProducer
 import endertitan.echolib.resourcenetworks.core.ResourceNetwork
-import endertitan.echolib.resourcenetworks.core.ResourceNetworkManager
 import endertitan.echolib.resourcenetworks.interfaces.INetworkMember
-import endertitan.echolib.resourcenetworks.tags.NetworkTag
 import endertitan.echolib.resourcenetworks.value.INetworkValue
 
-class ProducerNetworkCapability<T : INetworkValue>(val net: ResourceNetwork<T>, be: INetworkMember)
+open class ProducerNetworkCapability<T : INetworkValue>(val net: ResourceNetwork<T>, be: INetworkMember)
     : NetworkCapability(net, be), INetworkProducer<T> {
 
     private val zero: T = net.zeroSupplier()

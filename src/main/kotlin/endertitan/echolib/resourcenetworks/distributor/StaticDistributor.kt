@@ -1,7 +1,7 @@
 package endertitan.echolib.resourcenetworks.distributor
 
-import endertitan.echolib.resourcenetworks.capability.INetworkConsumer
-import endertitan.echolib.resourcenetworks.capability.INetworkProducer
+import endertitan.echolib.resourcenetworks.capability.interfaces.INetworkConsumer
+import endertitan.echolib.resourcenetworks.capability.interfaces.INetworkProducer
 import endertitan.echolib.resourcenetworks.value.INetworkValue
 
 open class StaticDistributor : BaseDistributor() {

@@ -1,7 +1,7 @@
 package endertitan.echolib.resourcenetworks.event
 
 import endertitan.echolib.resourcenetworks.core.ResourceNetwork
-import endertitan.echolib.resourcenetworks.capability.INetworkProducer
+import endertitan.echolib.resourcenetworks.capability.interfaces.INetworkProducer
 
 /**
  * The type of event that happened on a [ResourceNetwork]

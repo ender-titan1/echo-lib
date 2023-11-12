@@ -1,7 +1,7 @@
 package endertitan.echolib.resourcenetworks.interfaces
 
 import endertitan.echolib.resourcenetworks.core.Netsign
-import endertitan.echolib.resourcenetworks.capability.NetworkCapability
+import endertitan.echolib.resourcenetworks.capability.base.NetworkCapability
 import endertitan.echolib.resourcenetworks.tags.NetworkTag
 import net.minecraft.world.level.block.entity.BlockEntity
 import endertitan.echolib.resourcenetworks.core.ResourceNetwork

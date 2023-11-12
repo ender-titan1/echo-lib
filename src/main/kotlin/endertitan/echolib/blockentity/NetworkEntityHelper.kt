@@ -1,14 +1,11 @@
 package endertitan.echolib.blockentity
 
-import endertitan.echolib.resourcenetworks.*
-import endertitan.echolib.resourcenetworks.capability.INetworkConsumer
-import endertitan.echolib.resourcenetworks.capability.INetworkProducer
-import endertitan.echolib.resourcenetworks.capability.NetworkCapability
+import endertitan.echolib.resourcenetworks.capability.interfaces.INetworkConsumer
+import endertitan.echolib.resourcenetworks.capability.interfaces.INetworkProducer
+import endertitan.echolib.resourcenetworks.capability.base.NetworkCapability
 import endertitan.echolib.resourcenetworks.core.Netsign
 import endertitan.echolib.resourcenetworks.interfaces.INetworkBlock
 import endertitan.echolib.resourcenetworks.interfaces.INetworkMember
-import endertitan.echolib.resourcenetworks.tags.NetTagManager
-import endertitan.echolib.resourcenetworks.tags.NetworkTag
 import net.minecraft.core.BlockPos
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.world.level.LevelAccessor

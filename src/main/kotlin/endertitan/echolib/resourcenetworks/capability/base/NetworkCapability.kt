@@ -1,4 +1,4 @@
-package endertitan.echolib.resourcenetworks.capability
+package endertitan.echolib.resourcenetworks.capability.base
 
 import endertitan.echolib.resourcenetworks.interfaces.INetworkMember
 import endertitan.echolib.resourcenetworks.core.Netsign

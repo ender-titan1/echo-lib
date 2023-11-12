@@ -1,7 +1,7 @@
 package endertitan.echolib.resourcenetworks.core
 
-import endertitan.echolib.resourcenetworks.capability.INetworkConsumer
-import endertitan.echolib.resourcenetworks.capability.INetworkProducer
+import endertitan.echolib.resourcenetworks.capability.interfaces.INetworkConsumer
+import endertitan.echolib.resourcenetworks.capability.interfaces.INetworkProducer
 import endertitan.echolib.resourcenetworks.event.NetworkEventType
 import endertitan.echolib.resourcenetworks.interfaces.INetworkBlock
 import endertitan.echolib.resourcenetworks.interfaces.INetworkMember
