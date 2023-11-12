@@ -10,7 +10,11 @@ import endertitan.echolib.resourcenetworks.core.ResourceNetwork
  *  @see FloatValue
  */
 interface INetworkValue : Comparable<INetworkValue> {
+    operator fun plus(other: INetworkValue): INetworkValue
+
     operator fun plusAssign(other: INetworkValue)
+
+    operator fun minus(other: INetworkValue): INetworkValue
 
     operator fun minusAssign(other: INetworkValue)
 

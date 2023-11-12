@@ -54,7 +54,7 @@ class NetworkDebugger(props: Properties) : Item(props) {
 
                     if (capability is INetworkConsumer<*>) {
                         player.sendSystemMessage(Component.literal("Consumer:"))
-                        player.sendSystemMessage(Component.literal("    Incoming: ${capability.totalResources(network.netsign)}"))
+                        player.sendSystemMessage(Component.literal("    Incoming: ${capability.totalResources(network.zeroSupplier())}"))
                     }
                 }
             }

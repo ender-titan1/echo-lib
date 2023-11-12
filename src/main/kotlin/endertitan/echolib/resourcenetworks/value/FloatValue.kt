@@ -3,9 +3,23 @@ package endertitan.echolib.resourcenetworks.value
 import javax.naming.OperationNotSupportedException
 
 class FloatValue(var value: Float) : INetworkValue {
+    override fun plus(other: INetworkValue): INetworkValue {
+        if (other is FloatValue)
+            return FloatValue(value + other.value)
+
+        throw OperationNotSupportedException("Attempted to add two INetworkValues of different types")
+    }
+
     override operator fun plusAssign(other: INetworkValue) {
         if (other is FloatValue)
             value += other.value
+    }
+
+    override fun minus(other: INetworkValue): INetworkValue {
+        if (other is FloatValue)
+            return FloatValue(value - other.value)
+
+        throw OperationNotSupportedException("Attempted to subtract two INetworkValues of different types")
     }
 
     override operator fun minusAssign(other: INetworkValue) {

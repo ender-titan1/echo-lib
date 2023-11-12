@@ -75,13 +75,19 @@ class ResourceNetwork<T : INetworkValue>(sign: Netsign, sup: () -> T) {
             }
 
             if (totalProduction > maxThroughput) {
-
-                val entity = vertex.blockEntity as BlockEntity
-                callEvent(NetworkEventType.CONSTRAINT_THROUGHPUT_LIMIT_EXCEEDED, entity.blockPos, entity.level);
-
                 for (producer in producers.sortedByDescending { it.producerPriority }) {
+                    producer.limit = true
                     producer.limitedTo = if (maxThroughput > zeroSupplier()) maxThroughput else zeroSupplier()
                     maxThroughput -= producer.outgoingResources
+
+                    val capability = producer as NetworkCapability
+                    val entity = capability.blockEntity as BlockEntity
+
+                    callEvent(NetworkEventType.CONSTRAINT_THROUGHPUT_LIMIT_EXCEEDED, entity.blockPos, entity.level);
+                }
+            } else {
+                for (producer in producers) {
+                    producer.limit = false
                 }
             }
         }
@@ -125,8 +131,8 @@ class ResourceNetwork<T : INetworkValue>(sign: Netsign, sup: () -> T) {
         return connected
     }
 
-    fun getTagsFrom(vertex: NetworkCapability): MutableList<NetworkTag<*>> {
-        val tags: MutableList<NetworkTag<*>> = mutableListOf()
+    fun getTagsFrom(vertex: NetworkCapability): HashSet<NetworkTag<*>> {
+        val tags: HashSet<NetworkTag<*>> = hashSetOf()
 
         graph.doForEachConnected(vertex) {
             tags.addAll(it.blockEntity.exportTags(vertex.netsign))

@@ -8,6 +8,7 @@ import endertitan.echolib.resourcenetworks.*
 import endertitan.echolib.resourcenetworks.core.Netsign
 import endertitan.echolib.resourcenetworks.core.NetworkBuilder
 import endertitan.echolib.resourcenetworks.core.ResourceNetworkManager
+import endertitan.echolib.resourcenetworks.distributor.BaseDistributor
 import endertitan.echolib.resourcenetworks.event.NetworkEventType
 import endertitan.echolib.resourcenetworks.value.IntValue
 import net.minecraft.world.item.CreativeModeTabs
@@ -32,6 +33,7 @@ object EchoLib {
         .listener(NetworkEventType.ANY_ADDED) {
             println("Added to network!")
         }
+        .defaultDistributor(BaseDistributor())
         .build()
 
     init {

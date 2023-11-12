@@ -10,7 +10,7 @@ import endertitan.echolib.resourcenetworks.value.INetworkValue
 class ProducerNetworkCapability<T : INetworkValue>(val net: ResourceNetwork<T>, be: INetworkMember)
     : NetworkCapability(net, be), INetworkProducer<T> {
 
-    private val zero: T = ResourceNetworkManager.getSupplier<T>(net.netsign)()
+    private val zero: T = net.zeroSupplier()
 
     override var consumers: HashSet<INetworkConsumer<T>> = hashSetOf()
 
@@ -22,11 +22,12 @@ class ProducerNetworkCapability<T : INetworkValue>(val net: ResourceNetwork<T>, 
 
     override var limitedTo: T = zero
     override var producerPriority: Int = 0
+    override var limit: Boolean = false
 
     override fun distribute() {
         if (!valid) {
             net.distributor.distribute(this, zero, consumers)
-        } else if (limitedTo > outgoingResources) {
+        } else if (limitedTo <= outgoingResources && limit) {
             net.distributor.distribute(this, limitedTo, consumers)
         } else {
             net.distributor.distribute(this, outgoingResources, consumers)
