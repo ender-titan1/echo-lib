@@ -37,13 +37,34 @@ object NetworkEntityHelper {
         }
     }
 
+    fun saveAdditional(nbt: CompoundTag, entity: INetworkMember, blockState: BlockState) {
+        val block = blockState.block as INetworkBlock
+        for (network in block.connectToNetworks()) {
+            val capability = entity.getNetworkCapability(network.netsign)
+            val prefix = network.netsign.toString()
+
+            nbt.putBoolean("$prefix-valid", capability!!.valid)
+
+            if (capability is INetworkProducer<*>) {
+                nbt.putInt("$prefix-producerPriority", capability.producerPriority)
+                nbt.putBoolean("$prefix-limit", capability.limit)
+                capability.limitedTo.saveNBT("$prefix-limitTo", nbt)
+            }
+
+            if (capability is INetworkConsumer<*>) {
+                nbt.putInt("$prefix-consumerPriority", capability.consumerPriority)
+                capability.desiredResources.saveNBT("$prefix-desiredResources", nbt)
+            }
+        }
+    }
+
     fun producerSaveAdditional(nbt: CompoundTag, entity: INetworkMember, blockState: BlockState) {
         val block = blockState.block as INetworkBlock
         for (network in block.connectToNetworks()) {
             val capability = entity.getNetworkCapability(network.netsign)
 
             if (capability is INetworkProducer<*>) {
-                val prefix = network.netsign.sign.toString()
+                val prefix = network.netsign.toString()
                 val list = mutableListOf<Int>()
 
                 for (consumer in capability.consumers) {
@@ -63,7 +84,7 @@ object NetworkEntityHelper {
         val block = blockState.block as INetworkBlock
 
         for (network in block.connectToNetworks()) {
-            val prefix = network.netsign.sign.toString()
+            val prefix = network.netsign.toString()
             val array = nbt.getIntArray("$prefix-consumers").toList().chunked(3)
 
             val output = mutableListOf<BlockPos>()

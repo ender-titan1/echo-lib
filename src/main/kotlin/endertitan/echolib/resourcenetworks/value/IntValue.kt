@@ -1,5 +1,6 @@
 package endertitan.echolib.resourcenetworks.value
 
+import net.minecraft.nbt.CompoundTag
 import javax.naming.OperationNotSupportedException
 
 class IntValue(var value: Int) : INetworkValue {
@@ -40,6 +41,15 @@ class IntValue(var value: Int) : INetworkValue {
 
     override fun toString(): String {
         return value.toString()
+    }
+
+    override fun saveNBT(prefix: String, nbt: CompoundTag): CompoundTag {
+        nbt.putInt("$prefix-value", value);
+        return nbt
+    }
+
+    override fun loadNBT(prefix: String, nbt: CompoundTag) {
+        value = nbt.getInt("$prefix-value")
     }
 
     companion object {

@@ -1,6 +1,7 @@
 package endertitan.echolib.resourcenetworks.value
 
 import endertitan.echolib.resourcenetworks.core.ResourceNetwork
+import net.minecraft.nbt.CompoundTag
 
 /**
  *  A value that can be used and shared in a [ResourceNetwork],
@@ -23,4 +24,8 @@ interface INetworkValue : Comparable<INetworkValue> {
     override operator fun compareTo(other: INetworkValue): Int
 
     override fun toString(): String
+
+    fun saveNBT(prefix: String, nbt: CompoundTag): CompoundTag
+
+    fun loadNBT(prefix: String, nbt: CompoundTag)
 }
