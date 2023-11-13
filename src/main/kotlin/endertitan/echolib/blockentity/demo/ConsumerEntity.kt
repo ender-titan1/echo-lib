@@ -8,11 +8,16 @@ import endertitan.echolib.resourcenetworks.core.Netsign
 import endertitan.echolib.resourcenetworks.capability.base.ConsumerNetworkCapability
 import net.minecraft.core.BlockPos
 import net.minecraft.world.level.block.state.BlockState
+import endertitan.echolib.resourcenetworks.value.IntValue
 
 class ConsumerEntity(pos: BlockPos, state: BlockState) : BaseNetworkEntity(BlockEntities.CONSUMER_ENTITY, pos, state) {
 
-    private val powerNetworkCapability: NetworkCapability = ConsumerNetworkCapability(EchoLib.POWER_NETWORK, this)
+    private val powerNetworkCapability: ConsumerNetworkCapability<IntValue> = ConsumerNetworkCapability(EchoLib.POWER_NETWORK, this)
     override var isValidMember: Boolean = true
+
+    init {
+        powerNetworkCapability.desiredResources = IntValue(40)
+    }
 
     override fun getNetworkCapability(netsign: Netsign): NetworkCapability? {
         if (powerNetworkCapability.netsign == netsign)

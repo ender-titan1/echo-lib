@@ -33,7 +33,6 @@ object EchoLib {
         .listener(NetworkEventType.ANY_ADDED) {
             println("Added to network!")
         }
-        .defaultDistributor(BaseDistributor())
         .build()
 
     init {

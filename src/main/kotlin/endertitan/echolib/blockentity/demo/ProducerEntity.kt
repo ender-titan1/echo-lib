@@ -16,7 +16,7 @@ class ProducerEntity(pos: BlockPos, state: BlockState) : BaseNetworkProducerEnti
     override var isValidMember: Boolean = true
 
     init {
-        powerNetworkCapability.outgoingResources = IntValue(100)
+        powerNetworkCapability.outgoingResources = IntValue(90)
     }
 
     companion object {

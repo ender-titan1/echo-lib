@@ -138,6 +138,8 @@ class ResourceNetwork<T : INetworkValue>(sign: Netsign, sup: () -> T) {
             tags.addAll(it.blockEntity.exportTags(vertex.netsign))
         }
 
+        graph.unmarkAll()
+
         return tags
     }
 
