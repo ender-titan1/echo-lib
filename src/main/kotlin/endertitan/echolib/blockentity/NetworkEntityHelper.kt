@@ -6,6 +6,7 @@ import endertitan.echolib.resourcenetworks.capability.base.NetworkCapability
 import endertitan.echolib.resourcenetworks.core.Netsign
 import endertitan.echolib.resourcenetworks.interfaces.INetworkBlock
 import endertitan.echolib.resourcenetworks.interfaces.INetworkMember
+import endertitan.echolib.resourcenetworks.interfaces.ITagHandler
 import net.minecraft.core.BlockPos
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.world.level.LevelAccessor
@@ -76,6 +77,33 @@ object NetworkEntityHelper {
                 }
 
                 nbt.putIntArray("$prefix-consumers", list.toIntArray())
+            }
+        }
+    }
+
+    fun loadNBT(entity: INetworkMember, nbt: CompoundTag, blockState: BlockState) {
+        val block = blockState.block as INetworkBlock
+        for (network in block.connectToNetworks()) {
+            val capability = entity.getNetworkCapability(network.netsign)!!
+            val prefix = network.netsign.toString()
+
+            capability.valid = nbt.getBoolean("$prefix-valid")
+
+            if (capability is INetworkProducer<*>) {
+                capability.producerPriority = nbt.getInt("$prefix-producerPriority")
+                capability.limit = nbt.getBoolean("$prefix-limit")
+
+                val limitedTo = capability.net.zeroSupplier()
+                limitedTo.loadNBT("$prefix-limitTo", nbt)
+                capability.setLimitedToGeneric(limitedTo)
+            }
+
+            if (capability is INetworkConsumer<*>) {
+                capability.consumerPriority = nbt.getInt("$prefix-consumerPriority")
+
+                val desired = capability.net.zeroSupplier()
+                desired.loadNBT("$prefix-desiredResources", nbt)
+                capability.setDesired(desired)
             }
         }
     }

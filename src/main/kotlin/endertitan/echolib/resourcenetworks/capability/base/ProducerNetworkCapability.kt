@@ -6,7 +6,7 @@ import endertitan.echolib.resourcenetworks.core.ResourceNetwork
 import endertitan.echolib.resourcenetworks.interfaces.INetworkMember
 import endertitan.echolib.resourcenetworks.value.INetworkValue
 
-open class ProducerNetworkCapability<T : INetworkValue>(val net: ResourceNetwork<T>, be: INetworkMember)
+open class ProducerNetworkCapability<T : INetworkValue>(net: ResourceNetwork<T>, be: INetworkMember)
     : NetworkCapability(net, be), INetworkProducer<T> {
 
     private val zero: T = net.zeroSupplier()

@@ -12,6 +12,11 @@ interface INetworkConsumer<T : INetworkValue> {
     }
 
     @Suppress("unchecked_cast")
+    fun setDesired(desired: INetworkValue) {
+        desiredResources = desired as T
+    }
+
+    @Suppress("unchecked_cast")
     fun setResources(producer: INetworkProducer<*>, resources: INetworkValue) {
         incomingResources[producer] = resources as T
     }

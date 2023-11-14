@@ -121,7 +121,7 @@ class ResourceNetwork<T : INetworkValue>(sign: Netsign, sup: () -> T) {
         }
 
         for (handler in tagHandlers) {
-            handler.processTags(tags.toTypedArray())
+            handler.processTags(this, tags.toTypedArray())
         }
     }
 

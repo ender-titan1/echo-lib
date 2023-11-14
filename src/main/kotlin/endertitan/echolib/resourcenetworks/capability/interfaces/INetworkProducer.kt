@@ -33,5 +33,12 @@ interface INetworkProducer<T : INetworkValue> {
         consumers.remove(consumer as INetworkConsumer<T>)
     }
 
+    /**
+     * **DO NOT OVERRIDE**
+     */
+    fun setLimitedToGeneric(limitedTo: INetworkValue) {
+        this.limitedTo = limitedTo as T
+    }
+
     fun distribute()
 }
