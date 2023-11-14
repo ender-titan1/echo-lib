@@ -5,6 +5,7 @@ import endertitan.echolib.resourcenetworks.capability.base.NetworkCapability
 import endertitan.echolib.resourcenetworks.tags.NetworkTag
 import net.minecraft.world.level.block.entity.BlockEntity
 import endertitan.echolib.resourcenetworks.core.ResourceNetwork
+import endertitan.echolib.resourcenetworks.core.Subnetwork
 
 /**
  *  An interface allowing [BlockEntity]'s to connect to [ResourceNetwork]s and declare any [NetworkTag]s
@@ -12,6 +13,8 @@ import endertitan.echolib.resourcenetworks.core.ResourceNetwork
 interface INetworkMember {
 
     var isValidMember: Boolean
+
+    var subnetwork: Subnetwork<*>?
 
     /**
      * Specifies what [NetworkCapability]'s of this entity connect to which networks
