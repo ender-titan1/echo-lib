@@ -42,6 +42,7 @@ class NetworkDebugger(props: Properties) : Item(props) {
                     player.sendSystemMessage(Component.literal("Capability:"))
                     player.sendSystemMessage(Component.literal("    Valid: ${capability.valid}"))
                     player.sendSystemMessage(Component.literal("    Connected blocks: ${network.countConnected(capability)}"))
+                    player.sendSystemMessage(Component.literal("    Subnetwork ID: ${capability.subnetwork!!.id}"))
 
                     if (capability is INetworkProducer<*>) {
                         player.sendSystemMessage(Component.literal("Producer:"))

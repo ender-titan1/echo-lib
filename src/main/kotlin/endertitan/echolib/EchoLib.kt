@@ -33,6 +33,9 @@ object EchoLib {
         .listener(NetworkEventType.ANY_ADDED) {
             println("Added to network!")
         }
+        .listener(NetworkEventType.ANY_REMOVED) {
+            println("Removed from network!")
+        }
         .build()
 
     init {

@@ -1,5 +1,6 @@
 package endertitan.echolib.resourcenetworks.core
 
+import endertitan.echolib.resourcenetworks.capability.base.NetworkCapability
 import endertitan.echolib.resourcenetworks.capability.interfaces.INetworkConsumer
 import endertitan.echolib.resourcenetworks.capability.interfaces.INetworkProducer
 import endertitan.echolib.resourcenetworks.event.NetworkEventType
@@ -21,7 +22,6 @@ object ResourceNetworkManager {
         }!!.zeroSupplier as () -> T
     }
 
-    @Suppress("unchecked_cast")
     fun addBlock(state: BlockState, pos: BlockPos, level: LevelAccessor) {
         val block = state.block as INetworkBlock
         val networks = block.connectToNetworks()
@@ -29,7 +29,6 @@ object ResourceNetworkManager {
 
         val positions = arrayOf(pos.above(), pos.below(), pos.north(), pos.south(), pos.west(), pos.east())
         val adjacent = mutableListOf<Tuple<INetworkBlock, INetworkMember>>()
-
         // Get all neighbours
         for (position in positions) {
             val blockState = level.getBlockState(position)
@@ -42,7 +41,6 @@ object ResourceNetworkManager {
 
         // Connect to all eligible neighbours
         for (network in networks) {
-
             val vertex = blockEntity.getNetworkCapability(network.netsign)!!
 
             network.graph.insertNode(vertex, hashSetOf())
@@ -51,14 +49,33 @@ object ResourceNetworkManager {
                 it.a.connectToNetworks().contains(network)
             }
 
+            val subnetworks: HashSet<Tuple<Subnetwork<*>, NetworkCapability>> = hashSetOf()
             for (entry in neighbors) {
                 val networkMember = entry.b
-                network.graph.connect(vertex, networkMember.getNetworkCapability(network.netsign)!!)
+                val capability = networkMember.getNetworkCapability(network.netsign)!!
+                network.graph.connect(vertex, capability)
+                subnetworks.add(Tuple(capability.subnetwork as Subnetwork<*>, capability))
             }
 
-            // Refresh network
-            network.refreshFrom(vertex)
-            network.graph.unmarkAll()
+
+            if (neighbors.isEmpty()) {
+                vertex.subnetwork = network.newSubnetwork()
+            } else if (subnetworks.size == 1) {
+                vertex.subnetwork = subnetworks.elementAt(0).a
+            } else {
+                val main = subnetworks.elementAt(0).a
+                vertex.subnetwork = main
+
+                for (subnetwork in subnetworks) {
+                    if (subnetwork.a == main) {
+                        continue
+                    }
+
+                    subnetwork.a.mergeInto(main, subnetwork.b)
+                }
+            }
+
+            vertex.subnetwork!!.addCapability(vertex)
 
             network.callEvent(NetworkEventType.ANY_ADDED, pos, level)
 
@@ -100,7 +117,7 @@ object ResourceNetworkManager {
         for (network in networks) {
             network.graph.removeNode(blockEntity.getNetworkCapability(network.netsign)!!)
 
-            val capability = blockEntity.getNetworkCapability(network.netsign)
+            val capability = blockEntity.getNetworkCapability(network.netsign)!!
 
             network.callEvent(NetworkEventType.ANY_REMOVED, pos, level)
 
@@ -122,13 +139,20 @@ object ResourceNetworkManager {
                 it.a.connectToNetworks().contains(network)
             }
 
-            // Refresh network
-            for (neighbour in neighbors) {
-                val vertex = neighbour.b.getNetworkCapability(network.netsign)
-                network.refreshFrom(vertex!!)
-            }
+            capability.subnetwork!!.removeCapability(capability)
 
-            network.graph.unmarkAll()
+            if (neighbors.size > 1) {
+                for (neighbour in neighbors) {
+                    val vertex = neighbour.b.getNetworkCapability(network.netsign)!!
+                    val subnetwork = network.newSubnetwork()
+
+                    network.graph.doForEachConnected(vertex) {
+                        it.subnetwork = subnetwork
+                    }
+                }
+
+                network.graph.unmarkAll()
+            }
         }
     }
 }

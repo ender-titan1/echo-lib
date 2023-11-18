@@ -21,18 +21,18 @@ open class SequentialDistributor(val net: ResourceNetwork<*>) : BaseDistributor(
 
         while (remaining > zero) {
             for (consumer in consumers.sortedByDescending { it.consumerPriority }) {
-                val needed = consumer.desiredResources - consumer.totalResources(zero)
+                val needed = consumer.desiredResources - consumer.incomingResources
                 if (needed > zero) {
                     val amount = if (remaining < needed) remaining else needed
 
-                    consumer.addResources(producer, amount, zero)
+                    consumer.incomingResources += amount
 
                     remaining = remaining - needed
                     if (remaining < zero) {
                         remaining = zero
                     }
                 } else {
-                    consumer.addResources(producer, extra, zero)
+                    consumer.incomingResources += extra
                 }
             }
         }

@@ -12,8 +12,6 @@ import net.minecraft.world.level.block.state.BlockState
 abstract class BaseNetworkContainerEntity(type: BlockEntityType<*>, pos: BlockPos, state: BlockState) : BaseContainerBlockEntity(type, pos, state),
     INetworkMember {
 
-    override var subnetwork: Subnetwork<*>? = null
-
     override fun saveAdditional(nbt: CompoundTag) {
         NetworkEntityHelper.saveAdditional(nbt, this, blockState)
         super.saveAdditional(nbt)

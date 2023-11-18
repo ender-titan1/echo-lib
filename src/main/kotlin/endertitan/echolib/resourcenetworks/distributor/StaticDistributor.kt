@@ -9,7 +9,7 @@ open class StaticDistributor : BaseDistributor() {
 
     override fun distribute(producer: INetworkProducer<*>, available: INetworkValue, consumers: Collection<INetworkConsumer<*>>) {
         for (consumer in consumers) {
-            consumer.setResources(producer, available)
+            consumer.setResources(available)
         }
     }
 

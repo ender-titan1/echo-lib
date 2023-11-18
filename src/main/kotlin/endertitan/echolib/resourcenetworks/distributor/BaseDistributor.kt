@@ -14,7 +14,7 @@ open class BaseDistributor {
         val forEach = available / consumers.size
 
         for (consumer in consumers) {
-            consumer.setResources(producer, forEach)
+            consumer.setResources(forEach)
         }
     }
 

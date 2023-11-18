@@ -28,6 +28,11 @@ class ResourceNetwork<T : INetworkValue>(sign: Netsign, sup: () -> T) {
     var constrains: HashSet<NetworkConstraint> = hashSetOf()
     var defaultChannels: Int = 0
     var requiredBlocks: HashSet<BlockEntityType<*>> = hashSetOf()
+    private var nextSubnetworkID: Int = 0
+
+    fun newSubnetwork(): Subnetwork<T> {
+        return Subnetwork(nextSubnetworkID++, this)
+    }
 
     @Suppress("unchecked_cast")
     fun refreshFrom(vertex: NetworkCapability) {

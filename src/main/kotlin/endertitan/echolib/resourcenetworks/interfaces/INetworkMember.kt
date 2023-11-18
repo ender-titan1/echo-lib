@@ -14,8 +14,6 @@ interface INetworkMember {
 
     var isValidMember: Boolean
 
-    var subnetwork: Subnetwork<*>?
-
     /**
      * Specifies what [NetworkCapability]'s of this entity connect to which networks
      *
