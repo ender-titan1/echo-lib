@@ -8,7 +8,7 @@ import endertitan.echolib.resourcenetworks.graph.IVertex
 
 open class NetworkCapability(val net: ResourceNetwork<*>, val blockEntity: INetworkMember) : IVertex {
     val netsign: Netsign = net.netsign
-    var valid: Boolean = true
+    open var valid: Boolean = true
     var subnetwork: Subnetwork<*>? = null
     override var marked: Boolean = false
     override var adjacent: HashSet<IVertex> = hashSetOf()

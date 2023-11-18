@@ -13,10 +13,9 @@ import endertitan.echolib.resourcenetworks.value.IntValue
 class ConsumerEntity(pos: BlockPos, state: BlockState) : BaseNetworkEntity(BlockEntities.CONSUMER_ENTITY, pos, state) {
 
     private val powerNetworkCapability: ConsumerNetworkCapability<IntValue> = ConsumerNetworkCapability(EchoLib.POWER_NETWORK, this)
-    override var isValidMember: Boolean = true
 
     init {
-        powerNetworkCapability.desiredResources = IntValue(40)
+        powerNetworkCapability.desiredResources = IntValue(50)
     }
 
     override fun getNetworkCapability(netsign: Netsign): NetworkCapability? {

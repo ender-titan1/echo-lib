@@ -75,6 +75,7 @@ object ResourceNetworkManager {
                 }
             }
 
+            blockEntity.networkSetup(network)
             vertex.subnetwork!!.addCapability(vertex)
 
             network.callEvent(NetworkEventType.ANY_ADDED, pos, level)

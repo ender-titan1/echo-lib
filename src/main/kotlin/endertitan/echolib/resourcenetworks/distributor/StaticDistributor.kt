@@ -7,7 +7,7 @@ import endertitan.echolib.resourcenetworks.value.INetworkValue
 open class StaticDistributor : BaseDistributor() {
     override val isStatic: Boolean = true
 
-    override fun distribute(producer: INetworkProducer<*>, available: INetworkValue, consumers: Collection<INetworkConsumer<*>>) {
+    override fun distribute(available: INetworkValue, consumers: Collection<INetworkConsumer<*>>) {
         for (consumer in consumers) {
             consumer.setResources(available)
         }

@@ -7,7 +7,7 @@ import endertitan.echolib.resourcenetworks.value.INetworkValue
 open class BaseDistributor {
     open val isStatic: Boolean = false
 
-     open fun distribute(producer: INetworkProducer<*>, available: INetworkValue, consumers: Collection<INetworkConsumer<*>>) {
+     open fun distribute(available: INetworkValue, consumers: Collection<INetworkConsumer<*>>) {
         if (consumers.isEmpty())
             return
 

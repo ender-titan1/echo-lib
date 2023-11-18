@@ -10,31 +10,37 @@ open class SequentialDistributor(val net: ResourceNetwork<*>) : BaseDistributor(
         return "SequentialDistributor";
     }
 
-    override fun distribute(producer: INetworkProducer<*>, available: INetworkValue, consumers: Collection<INetworkConsumer<*>>) {
+    override fun distribute(available: INetworkValue, consumers: Collection<INetworkConsumer<*>>) {
         if (consumers.isEmpty())
             return
 
-        val zero = net.zeroSupplier()
+        println(available)
 
         var remaining = available
-        val extra = available / consumers.size
+        val sortedConsumers = consumers.sortedByDescending { it.consumerPriority }
 
-        while (remaining > zero) {
-            for (consumer in consumers.sortedByDescending { it.consumerPriority }) {
-                val needed = consumer.desiredResources - consumer.incomingResources
-                if (needed > zero) {
-                    val amount = if (remaining < needed) remaining else needed
+        for (consumer in sortedConsumers) {
+            consumer.setResources(net.zeroSupplier())
+        }
 
-                    consumer.incomingResources += amount
+        for (consumer in sortedConsumers) {
+            val needed = consumer.desiredResources
+            val amount = if (remaining < needed) remaining else needed
 
-                    remaining = remaining - needed
-                    if (remaining < zero) {
-                        remaining = zero
-                    }
-                } else {
-                    consumer.incomingResources += extra
-                }
-            }
+            consumer.incomingResources += amount
+
+            remaining = remaining - amount
+        }
+
+        if (remaining <= net.zeroSupplier())
+            return
+
+        val extra = remaining / consumers.size
+        println(extra)
+        println(remaining)
+
+        for (consumer in sortedConsumers) {
+            consumer.incomingResources += extra
         }
     }
 }

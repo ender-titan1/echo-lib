@@ -39,22 +39,26 @@ class NetworkDebugger(props: Properties) : Item(props) {
                     player.sendSystemMessage(Component.literal("    Constraints: ${listToString(network.constrains)}"))
                     player.sendSystemMessage(Component.literal("    Tags: ${listToString(network.getTagsFrom(capability))}"))
 
+                    player.sendSystemMessage(Component.literal("Subnetwork:"))
+                    player.sendSystemMessage(Component.literal("    ID: ${capability.subnetwork!!.id}"))
+                    player.sendSystemMessage(Component.literal("    Resources: ${capability.subnetwork!!.resources}"))
+                    player.sendSystemMessage(Component.literal("    Producers: ${capability.subnetwork!!.producers.size}"))
+                    player.sendSystemMessage(Component.literal("    Consumers: ${capability.subnetwork!!.consumers.size}"))
+
                     player.sendSystemMessage(Component.literal("Capability:"))
                     player.sendSystemMessage(Component.literal("    Valid: ${capability.valid}"))
                     player.sendSystemMessage(Component.literal("    Connected blocks: ${network.countConnected(capability)}"))
-                    player.sendSystemMessage(Component.literal("    Subnetwork ID: ${capability.subnetwork!!.id}"))
 
                     if (capability is INetworkProducer<*>) {
                         player.sendSystemMessage(Component.literal("Producer:"))
                         player.sendSystemMessage(Component.literal("    Outgoing: ${capability.outgoingResources}"))
-                        player.sendSystemMessage(Component.literal("    Limited To: ${capability.limitedTo}"))
-                        player.sendSystemMessage(Component.literal("    Consumers: ${capability.consumers.size}"))
                         player.sendSystemMessage(Component.literal("    Priority: ${capability.producerPriority}"))
                     }
 
                     if (capability is INetworkConsumer<*>) {
                         player.sendSystemMessage(Component.literal("Consumer:"))
-                        player.sendSystemMessage(Component.literal("    Incoming: ${capability.totalResources(network.zeroSupplier())}"))
+                        player.sendSystemMessage(Component.literal("    Incoming: ${capability.incomingResources}"))
+                        player.sendSystemMessage(Component.literal("    Priority: ${capability.consumerPriority}"))
                     }
                 }
             }

@@ -5,15 +5,12 @@ import endertitan.echolib.resourcenetworks.capability.base.NetworkCapability
 import endertitan.echolib.resourcenetworks.tags.NetworkTag
 import net.minecraft.world.level.block.entity.BlockEntity
 import endertitan.echolib.resourcenetworks.core.ResourceNetwork
-import endertitan.echolib.resourcenetworks.core.Subnetwork
+import endertitan.echolib.resourcenetworks.capability.base.ProducerNetworkCapability
 
 /**
  *  An interface allowing [BlockEntity]'s to connect to [ResourceNetwork]s and declare any [NetworkTag]s
  */
 interface INetworkMember {
-
-    var isValidMember: Boolean
-
     /**
      * Specifies what [NetworkCapability]'s of this entity connect to which networks
      *
@@ -35,7 +32,13 @@ interface INetworkMember {
         return arrayOf()
     }
 
-    fun setValid(value: Boolean) {
-        isValidMember = value
+    /**
+     * Called after the block first connects to the network. Specify default output values here
+     * @param network The network this member connected to
+     * @see ProducerNetworkCapability.setOutputAndUpdate
+     */
+    fun networkSetup(network: ResourceNetwork<*>) {
+
     }
+
 }

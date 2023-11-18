@@ -4,11 +4,13 @@ import endertitan.echolib.resourcenetworks.capability.base.NetworkCapability
 import endertitan.echolib.resourcenetworks.capability.interfaces.INetworkConsumer
 import endertitan.echolib.resourcenetworks.capability.interfaces.INetworkProducer
 import endertitan.echolib.resourcenetworks.value.INetworkValue
-import kotlin.reflect.KMutableProperty1
 
 class Subnetwork<T : INetworkValue>(val id: Int, val network: ResourceNetwork<T>) {
     val producers: HashSet<INetworkProducer<T>> = hashSetOf()
     val consumers: HashSet<INetworkConsumer<T>> = hashSetOf()
+
+    val resources: T = network.zeroSupplier()
+    private val producerOutputMap: HashMap<INetworkProducer<T>, T> = hashMapOf()
 
     override fun equals(other: Any?): Boolean {
         if (other !is Subnetwork<*>) {
@@ -40,10 +42,12 @@ class Subnetwork<T : INetworkValue>(val id: Int, val network: ResourceNetwork<T>
     fun addCapability(capability: NetworkCapability) {
         if (capability is INetworkProducer<*>) {
             producers.add(capability as INetworkProducer<T>)
+            distribute()
         }
 
         if (capability is INetworkConsumer<*>) {
             consumers.add(capability as INetworkConsumer<T>)
+            distribute()
         }
     }
 
@@ -55,23 +59,23 @@ class Subnetwork<T : INetworkValue>(val id: Int, val network: ResourceNetwork<T>
         if (capability is INetworkConsumer<*>) {
             consumers.remove(capability)
         }
+
+        distribute()
     }
 
-    fun distribute(): T {
-        return producers.map {
-           producer ->
+    @Suppress("unchecked_cast")
+    fun setResources(producer: INetworkProducer<*>, amount: INetworkValue) {
+        val tProducer = producer as INetworkProducer<T>
+        val tAmount = amount as T
 
-            val capability = producer as NetworkCapability
-            if (capability.valid)
-            {
-                return@map producer.outgoingResources
-            }
+        val previous = producerOutputMap.getOrElse(tProducer, network.zeroSupplier)
+        producerOutputMap[tProducer] = tAmount
+        resources += (tAmount - previous)
 
-            network.zeroSupplier()
-        }.reduce {
-            acc, t ->
-            acc += t
-            acc
-        }
+        distribute()
+    }
+
+    private fun distribute() {
+        network.distributor.distribute(resources, consumers)
     }
 }

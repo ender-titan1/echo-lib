@@ -11,7 +11,6 @@ import net.minecraft.world.level.block.state.BlockState
 
 class TransmitterEntity(pos: BlockPos, state: BlockState) : BaseNetworkEntity(BlockEntities.TRANSMITTER_ENTITY, pos, state) {
     private val powerNetworkCapability: NetworkCapability = NetworkCapability(EchoLib.POWER_NETWORK, this)
-    override var isValidMember: Boolean = true
 
     companion object {
         fun new(pos: BlockPos, state: BlockState): TransmitterEntity {
