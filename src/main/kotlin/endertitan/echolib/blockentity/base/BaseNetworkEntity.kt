@@ -12,18 +12,20 @@ import net.minecraft.world.level.block.state.BlockState
 abstract class BaseNetworkEntity(type: BlockEntityType<*>, pos: BlockPos, state: BlockState) : BlockEntity(type, pos, state),
     INetworkMember {
 
+    private var subnetworkMetadataTag: CompoundTag = CompoundTag()
+
     override fun saveAdditional(nbt: CompoundTag) {
         NetworkEntityHelper.saveAdditional(nbt, this, blockState)
         super.saveAdditional(nbt)
     }
 
     override fun load(nbt: CompoundTag) {
-        NetworkEntityHelper.loadNBT(this, nbt, blockState)
+        subnetworkMetadataTag = nbt
         super.load(nbt)
     }
 
     override fun onLoad() {
         super.onLoad()
-        NetworkEntityHelper.onLoad(this, blockState, blockPos, level!!)
+        NetworkEntityHelper.onLoad(this, blockState, blockPos, level!!, subnetworkMetadataTag)
     }
 }

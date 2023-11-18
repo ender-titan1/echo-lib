@@ -51,6 +51,17 @@ class Subnetwork<T : INetworkValue>(val id: Int, val network: ResourceNetwork<T>
         }
     }
 
+    @Suppress("unchecked_cast")
+    fun addCapabilityNoUpdate(capability: NetworkCapability) {
+        if (capability is INetworkProducer<*>) {
+            producers.add(capability as INetworkProducer<T>)
+        }
+
+        if (capability is INetworkConsumer<*>) {
+            consumers.add(capability as INetworkConsumer<T>)
+        }
+    }
+
     fun removeCapability(capability: NetworkCapability) {
         if (capability is INetworkProducer<*>) {
             producers.remove(capability)
@@ -75,7 +86,7 @@ class Subnetwork<T : INetworkValue>(val id: Int, val network: ResourceNetwork<T>
         distribute()
     }
 
-    private fun distribute() {
+    fun distribute() {
         network.distributor.distribute(resources, consumers)
     }
 }
