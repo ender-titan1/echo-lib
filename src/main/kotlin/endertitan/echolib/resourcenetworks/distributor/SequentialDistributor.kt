@@ -13,9 +13,7 @@ open class SequentialDistributor(val net: ResourceNetwork<*>) : BaseDistributor(
     override fun distribute(available: INetworkValue, consumers: Collection<INetworkConsumer<*>>) {
         if (consumers.isEmpty())
             return
-
-        println(available)
-
+        
         var remaining = available
         val sortedConsumers = consumers.sortedByDescending { it.consumerPriority }
 
@@ -36,8 +34,6 @@ open class SequentialDistributor(val net: ResourceNetwork<*>) : BaseDistributor(
             return
 
         val extra = remaining / consumers.size
-        println(extra)
-        println(remaining)
 
         for (consumer in sortedConsumers) {
             consumer.incomingResources += extra

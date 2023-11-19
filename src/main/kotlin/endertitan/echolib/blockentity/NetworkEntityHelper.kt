@@ -21,6 +21,7 @@ object NetworkEntityHelper {
 
         for (network in networkBlock.connectToNetworks()) {
             val capability = entity.getNetworkCapability(network.netsign)!!
+            val compound = subnetworkMetadata.getCompound(network.netsign.toString())
             network.graph.insertNode(capability, hashSetOf())
 
             val positions = arrayOf(blockPos.above(), blockPos.below(),
@@ -35,31 +36,28 @@ object NetworkEntityHelper {
                 val networkCapability = neighbourEntity.getNetworkCapability(network.netsign) ?: continue
 
                 network.graph.connect(capability, networkCapability)
-
-                if (capability.subnetwork == null) {
-                    capability.subnetwork = networkCapability.subnetwork
-                }
             }
 
-            if (capability.subnetwork == null) {
-                capability.subnetwork = network.newSubnetwork()
-            }
+            val subnetworkID = compound.getInt("SubnetworkID")
 
+            capability.subnetwork = network.loadSubnetwork(subnetworkID)
+            capability.subnetwork!!.inhibitUpdates = true
             capability.blockEntity.networkSetup(network)
 
             val subnetwork = capability.subnetwork!!
-            subnetwork.addCapabilityNoUpdate(capability)
+            subnetwork.addCapability(capability)
 
             if (capability is INetworkProducer<*>) {
                 subnetwork.setResources(capability, capability.outgoingResources)
             }
 
-            val compound = subnetworkMetadata.getCompound(network.netsign.toString())
             val producerCount = compound.getInt("SubnetworkProducerCount")
             val consumerCount = compound.getInt("SubnetworkConsumerCount")
 
             if (subnetwork.producers.size == producerCount && subnetwork.consumers.size == consumerCount) {
+                subnetwork.inhibitUpdates = false
                 subnetwork.distribute()
+                network.untrackSubnetwork(subnetwork)
             }
         }
     }
@@ -70,6 +68,7 @@ object NetworkEntityHelper {
             val networkCompound = CompoundTag()
             val capability = entity.getNetworkCapability(network.netsign)!!
 
+            networkCompound.putInt("SubnetworkID", capability.subnetwork!!.id)
             networkCompound.putInt("SubnetworkProducerCount", capability.subnetwork!!.producers.size)
             networkCompound.putInt("SubnetworkConsumerCount", capability.subnetwork!!.consumers.size)
 

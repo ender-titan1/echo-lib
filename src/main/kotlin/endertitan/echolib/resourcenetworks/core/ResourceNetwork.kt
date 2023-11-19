@@ -1,20 +1,15 @@
 package endertitan.echolib.resourcenetworks.core
 
-import endertitan.echolib.resourcenetworks.capability.interfaces.INetworkConsumer
-import endertitan.echolib.resourcenetworks.capability.interfaces.INetworkProducer
 import endertitan.echolib.resourcenetworks.capability.base.NetworkCapability
 import endertitan.echolib.resourcenetworks.distributor.BaseDistributor
 import endertitan.echolib.resourcenetworks.distributor.SequentialDistributor
 import endertitan.echolib.resourcenetworks.event.NetworkEvent
 import endertitan.echolib.resourcenetworks.event.NetworkEventType
 import endertitan.echolib.resourcenetworks.graph.Graph
-import endertitan.echolib.resourcenetworks.interfaces.ITagHandler
-import endertitan.echolib.resourcenetworks.tags.NetTagKey
 import endertitan.echolib.resourcenetworks.tags.NetworkTag
 import endertitan.echolib.resourcenetworks.value.INetworkValue
 import net.minecraft.core.BlockPos
 import net.minecraft.world.level.LevelAccessor
-import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.level.block.entity.BlockEntityType
 
 class ResourceNetwork<T : INetworkValue>(sign: Netsign, sup: () -> T) {
@@ -29,9 +24,29 @@ class ResourceNetwork<T : INetworkValue>(sign: Netsign, sup: () -> T) {
     var defaultChannels: Int = 0
     var requiredBlocks: HashSet<BlockEntityType<*>> = hashSetOf()
     private var nextSubnetworkID: Int = 0
+    private val loadedSubnetworks: HashSet<Subnetwork<T>> = hashSetOf()
 
     fun newSubnetwork(): Subnetwork<T> {
-        return Subnetwork(nextSubnetworkID++, this)
+        return Subnetwork(++nextSubnetworkID, this)
+    }
+
+    fun loadSubnetwork(id: Int): Subnetwork<T> {
+        val matching = loadedSubnetworks.firstOrNull { it.id == id }
+        if (matching != null) {
+            return matching
+        } else {
+            val subnetwork = Subnetwork(id, this)
+            loadedSubnetworks.add(subnetwork)
+
+            if (nextSubnetworkID < id)
+                nextSubnetworkID = id
+
+            return subnetwork
+        }
+    }
+
+    fun untrackSubnetwork(subnetwork: Subnetwork<*>) {
+        loadedSubnetworks.remove(subnetwork)
     }
 
     fun countConnected(vertex: NetworkCapability): Int {

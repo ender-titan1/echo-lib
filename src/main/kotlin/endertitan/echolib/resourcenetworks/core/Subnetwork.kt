@@ -10,6 +10,7 @@ class Subnetwork<T : INetworkValue>(val id: Int, val network: ResourceNetwork<T>
     val consumers: HashSet<INetworkConsumer<T>> = hashSetOf()
 
     val resources: T = network.zeroSupplier()
+    var inhibitUpdates: Boolean = false
     private val producerOutputMap: HashMap<INetworkProducer<T>, T> = hashMapOf()
 
     override fun equals(other: Any?): Boolean {
@@ -51,17 +52,6 @@ class Subnetwork<T : INetworkValue>(val id: Int, val network: ResourceNetwork<T>
         }
     }
 
-    @Suppress("unchecked_cast")
-    fun addCapabilityNoUpdate(capability: NetworkCapability) {
-        if (capability is INetworkProducer<*>) {
-            producers.add(capability as INetworkProducer<T>)
-        }
-
-        if (capability is INetworkConsumer<*>) {
-            consumers.add(capability as INetworkConsumer<T>)
-        }
-    }
-
     fun removeCapability(capability: NetworkCapability) {
         if (capability is INetworkProducer<*>) {
             producers.remove(capability)
@@ -87,6 +77,9 @@ class Subnetwork<T : INetworkValue>(val id: Int, val network: ResourceNetwork<T>
     }
 
     fun distribute() {
+        if (inhibitUpdates)
+            return
+
         network.distributor.distribute(resources, consumers)
     }
 }
