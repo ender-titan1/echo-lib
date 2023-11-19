@@ -35,13 +35,6 @@ class NetworkBuilder<T : INetworkValue>(val netsign: Netsign, private val sup: (
         return this
     }
 
-    fun require(blocks: Array<BlockEntityType<*>>): NetworkBuilder<T> {
-        network.constrains.add(NetworkConstraint.REQUIRE_BLOCKS)
-        network.requiredBlocks.addAll(blocks)
-
-        return this
-    }
-
     fun static(): NetworkBuilder<T> {
         network.static = true
         defaultDistributor(StaticDistributor())

@@ -1,11 +1,10 @@
 package endertitan.echolib.resourcenetworks.tags
 
 import endertitan.echolib.resourcenetworks.interfaces.INetworkMember
-import endertitan.echolib.resourcenetworks.interfaces.ITagHandler
 import endertitan.echolib.resourcenetworks.core.ResourceNetwork
 
 /**
- * A tag to mark a [INetworkMember] as having certain properties (Ex. max capacity) and is handled by [ITagHandler]s or by [ResourceNetwork]s
+ * A tag to mark a [INetworkMember] as having certain properties (Ex. max capacity)
  *
  * Also contains methods for instantiating commonly used tags
  *

@@ -5,6 +5,7 @@ import net.minecraft.world.level.LevelAccessor
 import endertitan.echolib.resourcenetworks.core.ResourceNetwork
 import endertitan.echolib.resourcenetworks.core.ResourceNetworkManager
 import endertitan.echolib.resourcenetworks.core.NetworkBuilder
+import endertitan.echolib.resourcenetworks.core.Subnetwork
 
 /**
  * An event that gets fired whenever something happens in the associated [ResourceNetwork]

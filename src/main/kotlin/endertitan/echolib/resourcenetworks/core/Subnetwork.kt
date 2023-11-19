@@ -3,11 +3,19 @@ package endertitan.echolib.resourcenetworks.core
 import endertitan.echolib.resourcenetworks.capability.base.NetworkCapability
 import endertitan.echolib.resourcenetworks.capability.interfaces.INetworkConsumer
 import endertitan.echolib.resourcenetworks.capability.interfaces.INetworkProducer
+import endertitan.echolib.resourcenetworks.event.NetworkEventType
+import endertitan.echolib.resourcenetworks.tags.NetTagKey
 import endertitan.echolib.resourcenetworks.value.INetworkValue
+import net.minecraft.world.level.block.entity.BlockEntity
 
 class Subnetwork<T : INetworkValue>(val id: Int, val network: ResourceNetwork<T>) {
     val producers: HashSet<INetworkProducer<T>> = hashSetOf()
     val consumers: HashSet<INetworkConsumer<T>> = hashSetOf()
+
+    private var usedChannels: Int = 0
+    private var availableChannels: Int = network.defaultChannels
+    private val throughputArray: HashSet<T> = hashSetOf()
+    private var maxThroughput: T = network.zeroSupplier()
 
     val resources: T = network.zeroSupplier()
     var inhibitUpdates: Boolean = false
@@ -50,8 +58,31 @@ class Subnetwork<T : INetworkValue>(val id: Int, val network: ResourceNetwork<T>
             consumers.add(capability as INetworkConsumer<T>)
             distribute()
         }
+
+        val tags = capability.blockEntity.exportTags(network.netsign)
+
+        for (tag in tags) {
+            when (tag.key) {
+                NetTagKey.PROVIDED_CHANNELS -> {
+                    availableChannels += tag.value as Int
+                }
+                NetTagKey.USED_CHANNELS -> {
+                    usedChannels += tag.value as Int
+                }
+                NetTagKey.MAX_THROUGHPUT -> {
+                    throughputArray.add(tag.value as T)
+                    maxThroughput = throughputArray.min()
+                }
+            }
+        }
+
+        if (availableChannels < usedChannels) {
+            val entity = capability.blockEntity as BlockEntity
+            network.callEvent(NetworkEventType.CONSTRAINT_CHANNEL_LIMIT_EXCEEDED, entity.blockPos, entity.level)
+        }
     }
 
+    @Suppress("unchecked_cast")
     fun removeCapability(capability: NetworkCapability) {
         if (capability is INetworkProducer<*>) {
             producers.remove(capability)
@@ -59,6 +90,23 @@ class Subnetwork<T : INetworkValue>(val id: Int, val network: ResourceNetwork<T>
 
         if (capability is INetworkConsumer<*>) {
             consumers.remove(capability)
+        }
+
+        val tags = capability.blockEntity.exportTags(network.netsign)
+
+        for (tag in tags) {
+            when (tag.key) {
+                NetTagKey.PROVIDED_CHANNELS -> {
+                    availableChannels -= tag.value as Int
+                }
+                NetTagKey.USED_CHANNELS -> {
+                    usedChannels -= tag.value as Int
+                }
+                NetTagKey.MAX_THROUGHPUT -> {
+                    throughputArray.remove(tag.value as T)
+                    maxThroughput = throughputArray.min()
+                }
+            }
         }
 
         distribute()
@@ -80,6 +128,11 @@ class Subnetwork<T : INetworkValue>(val id: Int, val network: ResourceNetwork<T>
         if (inhibitUpdates)
             return
 
-        network.distributor.distribute(resources, consumers)
+        if (NetworkConstraint.LIMIT_THROUGHPUT in network.constrains) {
+            val available = if (maxThroughput < resources) maxThroughput else resources
+            network.distributor.distribute(available, consumers)
+        } else {
+            network.distributor.distribute(resources, consumers)
+        }
     }
 }

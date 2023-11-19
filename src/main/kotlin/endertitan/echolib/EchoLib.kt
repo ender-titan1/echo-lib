@@ -36,7 +36,7 @@ object EchoLib {
         .listener(NetworkEventType.ANY_REMOVED) {
             println("Removed from network!")
         }
-        //.defaultDistributor(BaseDistributor())
+        .limitThroughput()
         .build()
 
     init {
